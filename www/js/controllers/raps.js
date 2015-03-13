@@ -1,5 +1,6 @@
-angular.module('starter.controllers.RapsCtrl', [])
+/* global app */
+'use strict';
 
-.controller('RapsCtrl', function($scope) {
+app.controller('RapsCtrl', function($scope) {
 
 });

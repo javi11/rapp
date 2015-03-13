@@ -1,7 +1,6 @@
+/* global app */
 'use strict';
 
-angular.module('starter.controllers.AppCtrl', [])
-
-.controller('AppCtrl', function($scope) {
+app.controller('AppCtrl', function($scope) {
 
 });
