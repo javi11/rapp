@@ -1,10 +1,10 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Play</h1>
+    <h1 class="title">Play {{selected.name}}</h1>
   </ion-header-bar>
   <ion-content class="has-header">
-    <audio controls preload="none" type="audio/mpeg" autoplay> 
-      <source ng-src="{{audioPlay | trustAsResourceUrl}}" />
+    <audio controls preload="none" type="audio/mpeg" autoplay>
+      <source ng-src="{{selected.path + '/' + selected.name + '.mp3'}}" />
     </audio>
   </ion-content>
 </ion-modal-view>

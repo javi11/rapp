@@ -1,8 +1,24 @@
 <ion-view view-title="Raps">
+  <ion-nav-buttons side="primary">
+    <h1 class="title">Raps</h1>
+    <div class="buttons">
+      <button class="button" ng-click="data.showDelete = !data.showDelete; data.showReorder = !data.showReorder">
+        Editar
+      </button>
+    </div>
+  </ion-nav-buttons>
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="rap in raps">
-        {{rap.title}}
+    <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+      <ion-item ng-repeat="rap in raps" item="rap" class="item-remove-animate">
+        <div ng-click="open(rap)">
+        {{rap.name}}
+        </div>
+        <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(rap)">
+        </ion-delete-button>
+        <ion-option-button class="button-calm" ng-click="share(rap)">
+          Compartir
+        </ion-option-button>
+        <ion-reorder-button class="ion-navicon" on-reorder="moveItem(rap, $fromIndex, $toIndex)"></ion-reorder-button>
       </ion-item>
     </ion-list>
   </ion-content>
