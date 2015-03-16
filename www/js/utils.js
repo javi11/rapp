@@ -60,7 +60,7 @@ function deleteObject(db, object) {
     array = JSON.parse(localStorage.getItem(db));
   }
 
-  array
+  array = array
     .filter(function(el) {
       return el.name !== object.name;
     });
