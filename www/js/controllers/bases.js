@@ -14,6 +14,7 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   $scope.stopRecordBtn = false;
   $scope.saveRecordBtn = false;
   $scope.playRecordBtn = false;
+  $scope.pauseRecordBtn = false;
 
   $ionicModal.fromTemplateUrl('templates/records/save.html', {
     scope: $scope,
@@ -26,45 +27,41 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
     $scope.modal.hide();
   };
 
-  function OnStart() {
-    $scope.startRecordBtn = false;
-    $scope.stopRecordBtn = true;
-  }
-
-  function OnStop() {
-    $scope.startRecordBtn = false;
-    $scope.stopRecordBtn = false;
-    $scope.playRecordBtn = true;
-  }
-
-  function OnSaved(result) {
+  function OnSaved() {
 
     $ionicLoading.hide();
-
-    if (result.code !== 200) {
-      return;
-    }
 
     $scope.modal.show();
     $scope.startRecordBtn = true;
     $scope.stopRecordBtn = false;
     $scope.saveRecordBtn = false;
     $scope.playRecordBtn = false;
+    $scope.pauseRecordBtn = false;
   }
 
   $scope.startRecord = function() {
-    console.log('polaa');
-    OnStart();
+    $scope.startRecordBtn = false;
+    $scope.stopRecordBtn = true;
     $record.start();
   };
 
   $scope.stopRecord = function() {
-    OnStop();
+    $scope.startRecordBtn = false;
+    $scope.stopRecordBtn = false;
+    $scope.playRecordBtn = true;
     $record.stop();
   };
 
   $scope.playRecord = function() {
+    $scope.playRecordBtn = false;
+    $scope.pauseRecordBtn = true;
     $record.play();
+  };
+
+  $scope.pauseRecord = function() {
+    $scope.pauseRecordBtn = false;
+    $scope.playRecordBtn = true;
+    $record.pause();
   };
 
   $scope.showSaveForm = function() {
@@ -80,10 +77,9 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
 
   $scope.saveRecord = function() {
     $ionicLoading.show({
-      template: 'Loading...'
+      template: 'Cargando...'
     });
     console.log('SAVE RECORD');
-    console.log($scope.record);
     $record.save(OnSaved, $scope.record);
   };
 

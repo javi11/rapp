@@ -1,15 +1,15 @@
-/*global services, LocalFileSystem*/
+/*global services, cordova, randomString*/
 
 'use strict';
 /**
  * Record service
  * @module record
  */
-services.factory('$record', function($cordovaMedia) {
+services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList) {
 
-  var enumerator = 0;
-  var recordName = 'record-' + enumerator + '.mp3';
+  var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
   var mediaRec = null;
+  var mediaPlayed = null;
   var OnCallback = null;
   var OnAppendData = {};
 
@@ -20,13 +20,9 @@ services.factory('$record', function($cordovaMedia) {
    */
 
   function startRecord() {
-    enumerator++;
-    recordName = 'record-' + enumerator + '.mp3';
-    mediaRec = $cordovaMedia.newMedia(recordName).then(function() {
-      // success
-    }, function() {
-      // error
-    });
+    recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
+    mediaRec = $cordovaMedia.newMedia(recordName);
+    mediaRec = mediaRec.media;
     mediaRec.startRecord();
   }
 
@@ -50,6 +46,18 @@ services.factory('$record', function($cordovaMedia) {
     return recordName;
   }
 
+
+  /**
+   * When any process of saving file fail, this console the error.
+   *
+   * @method Fail
+   */
+  function fail(err) {
+    console.log('Error');
+    console.log(err);
+  }
+
+
   /**
    * Save the recorded file to the server
    *
@@ -59,45 +67,12 @@ services.factory('$record', function($cordovaMedia) {
   function save(callback, appendData) {
     OnCallback = callback;
     OnAppendData = appendData;
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, OnFileSystem, fail);
-  }
+    OnAppendData.path = APPDIR + '/rap';
+    RapList.save(OnAppendData, function() {
+      $cordovaFile.moveFile(cordova.file.externalRootDirectory, recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', appendData.name + '.mp3')
+        .then(OnCallback, fail);
+    });
 
-  /**
-   * Callback for setting the file system to persistent.
-   *
-   * @method OnFileSystem
-   */
-
-  function OnFileSystem(fileSystem) {
-    fileSystem.root.getFile(recordName, {
-      create: true,
-      exclusive: false
-    }, OnGetFile, fail);
-  }
-
-  /**
-   * Callback for geting the file for disk
-   *
-   * @method OnGetFile
-   */
-
-  function OnGetFile(fileEntry) {
-      console.log('File ' + recordName + ' created at ' + fileEntry.fullPath);
-      mediaRec = $cordovaMedia.newMedia(fileEntry.fullPath).then(function() {
-        // success
-      }, function() {
-        // error
-      });
-    }
-    /**
-     * When any process of saving file fail, this console the error.
-     *
-     * @method OnFileEntry
-     */
-
-  function fail(err) {
-    console.log('Error');
-    console.log(err);
   }
 
   /**
@@ -107,19 +82,28 @@ services.factory('$record', function($cordovaMedia) {
    */
 
   function playRecord() {
-    var mediaFile = $cordovaMedia.newMedia(recordName).then(function() {
-      // success
-    }, function() {
-      // error
-    });
+    mediaPlayed = $cordovaMedia.newMedia(recordName);
     // Play audio
-    mediaFile.play();
+    mediaPlayed.media.play();
   }
+
+  /**
+   * Play record
+   *
+   * @method playRecord
+   */
+
+  function pauseRecord() {
+    // Play audio
+    mediaPlayed.media.pause();
+  }
+
 
   return {
     start: startRecord,
     stop: stopRecord,
     play: playRecord,
+    pause: pauseRecord,
     name: getRecord,
     save: save
   };

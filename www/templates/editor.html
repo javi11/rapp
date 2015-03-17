@@ -9,22 +9,23 @@
     <button ng-show="stopRecordBtn" ng-click="stopRecord()" class="button button-block icon-left ion-stop button-energized ng-hide"><strong>PARAR</strong></button>
 
     <button ng-show="playRecordBtn" ng-click="playRecord()" class="button button-block icon-left ion-play button-calm ng-hide"><strong>PLAY</strong></button>
+     <button ng-show="pauseRecordBtn" ng-click="pauseRecord()" class="button button-block icon-left ion-pause button-energized ng-hide"><strong>PAUSE</strong></button>
 
     <div ng-show="playRecordBtn" class="button-bar">
-	  <a class="button button-balanced" ng-touch="showSaveForm()">GUARDAR</a>
-	  <a class="button button-assertive" ng-touch="recordAgain()">VOLVER A GRABAR</a>
+	  <a class="button button-balanced" ng-click="showSaveForm()">GUARDAR</a>
+	  <a class="button button-assertive" ng-click="recordAgain()">VOLVER A GRABAR</a>
 	</div>
 
     <form ng-submit="saveRecord()" ng-show="saveRecordBtn">
 
     	<label class="item item-input item-stacked-label">
 		    <span class="input-label">Nombre:</span>
-		    <input type="text" ng-model="record.name" placeholder="Put a name to this record"/>
+		    <input type="text" ng-model="record.name" placeholder="Pon un nombre a esta grabación."/>
 	  	</label>
 
 	    <label class="item item-input item-stacked-label">
 		    <span class="input-label">Descripción:</span>
-		    <textarea placeholder="Put here the text of the sound recorded." ng-model="record.text"></textarea>
+		    <textarea placeholder="Pon una descripción a esta grabación." ng-model="record.text"></textarea>
 	  	</label>
 
 	    <label class="item">
