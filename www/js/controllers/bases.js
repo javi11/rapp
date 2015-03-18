@@ -1,7 +1,7 @@
 /* global app */
 'use strict';
 
-app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, $ionicModal, $stateParams) {
+app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList) {
   $scope.recording = false;
 
   $scope.record = {
@@ -15,6 +15,8 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   $scope.saveRecordBtn = false;
   $scope.playRecordBtn = false;
   $scope.pauseRecordBtn = false;
+  $scope.playBaseBtn = true;
+  $scope.pauseBaseBtn = false;
 
   $ionicModal.fromTemplateUrl('templates/records/save.html', {
     scope: $scope,
@@ -83,25 +85,31 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
     $record.save(OnSaved, $scope.record);
   };
 
+
   $scope.bases = [{
-    title: 'Reggae',
-    id: 1
+    id: 1,
+    title: 'Aron Beats - Nosotros viviremos',
+    path: '/bases/Aron Beats - Nosotros viviremos.mp3'
   }, {
-    title: 'Chill',
-    id: 2
-  }, {
-    title: 'Dubstep',
-    id: 3
-  }, {
-    title: 'Indie',
-    id: 4
-  }, {
-    title: 'Rap',
-    id: 5
-  }, {
-    title: 'Cowbell',
-    id: 6
+    id: 2,
+    title: 'Apollo Brown - One man',
+    path: '/bases/Apollo Brown - One man.mp3'
   }];
+
+  $scope.playBase = function() {
+    if ($stateParams.id) {
+      BaseList.play($scope.bases[$stateParams.id]);
+      $scope.playBaseBtn = false;
+      $scope.pauseBaseBtn = true;
+    }
+  };
+
+  $scope.pauseBase = function() {
+    BaseList.pause();
+    $scope.playBaseBtn = true;
+    $scope.pauseBaseBtn = false;
+  };
+
 
   if ($stateParams.id) {
     $scope.title = $scope.bases[$stateParams.id].title;

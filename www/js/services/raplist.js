@@ -2,8 +2,8 @@
 
 'use strict';
 /**
- * BaseList service
- * @module BaseList
+ * RapList service
+ * @module RapList
  */
 services.factory('RapList', function() {
 
