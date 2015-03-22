@@ -27,11 +27,13 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       //Create app directory
       var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
-        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false);
+        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
+        coverDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases/covers', false);
 
       rootDir
         .then(rapDir)
-        .finally(basesDir);
+        .then(basesDir)
+        .finally(coverDir);
 
     }
     if (window.StatusBar) {

@@ -28,7 +28,8 @@ services.factory('BaseList', function($cordovaMedia, APPDIR) {
   }
 
   function playBase(base) {
-    playing = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + '/' + APPDIR + base.path);
+    console.log(cordova.file.externalRootDirectory + APPDIR + base.path + base.song);
+    playing = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + APPDIR + base.path + base.song);
     // Play audio
     playing.media.play();
   }

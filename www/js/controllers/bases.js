@@ -1,9 +1,9 @@
 /* global app */
 'use strict';
 
-app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList) {
+app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR) {
   $scope.recording = false;
-
+  $scope.APPDIR = APPDIR;
   $scope.record = {
     tags: [],
     text: '',
@@ -11,12 +11,9 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   };
 
   $scope.startRecordBtn = true;
-  $scope.stopRecordBtn = false;
   $scope.saveRecordBtn = false;
   $scope.playRecordBtn = false;
-  $scope.pauseRecordBtn = false;
   $scope.playBaseBtn = true;
-  $scope.pauseBaseBtn = false;
 
   $ionicModal.fromTemplateUrl('templates/records/save.html', {
     scope: $scope,
@@ -30,38 +27,30 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   };
 
   function OnSaved() {
-
     $ionicLoading.hide();
-
     $scope.modal.show();
     $scope.startRecordBtn = true;
-    $scope.stopRecordBtn = false;
     $scope.saveRecordBtn = false;
     $scope.playRecordBtn = false;
-    $scope.pauseRecordBtn = false;
   }
 
   $scope.startRecord = function() {
     $scope.startRecordBtn = false;
-    $scope.stopRecordBtn = true;
     $record.start();
   };
 
   $scope.stopRecord = function() {
-    $scope.startRecordBtn = false;
-    $scope.stopRecordBtn = false;
+    $scope.startRecordBtn = true;
     $scope.playRecordBtn = true;
     $record.stop();
   };
 
   $scope.playRecord = function() {
     $scope.playRecordBtn = false;
-    $scope.pauseRecordBtn = true;
     $record.play();
   };
 
   $scope.pauseRecord = function() {
-    $scope.pauseRecordBtn = false;
     $scope.playRecordBtn = true;
     $record.pause();
   };
@@ -72,7 +61,6 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
 
   $scope.recordAgain = function() {
     $scope.startRecordBtn = true;
-    $scope.stopRecordBtn = false;
     $scope.playRecordBtn = false;
     $scope.saveRecordBtn = false;
   };
@@ -85,33 +73,31 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
     $record.save(OnSaved, $scope.record);
   };
 
-
   $scope.bases = [{
-    id: 1,
+    id: 0,
     title: 'Aron Beats - Nosotros viviremos',
-    path: '/bases/Aron Beats - Nosotros viviremos.mp3'
+    path: '/bases/Aron/',
+    song: 'Aron Beats - Nosotros viviremos.mp3'
   }, {
-    id: 2,
+    id: 1,
     title: 'Apollo Brown - One man',
-    path: '/bases/Apollo Brown - One man.mp3'
+    path: '/bases/Apollo Brown/',
+    song: 'Apollo Brown - One man.mp3'
   }];
-
+  if ($stateParams.id) {
+    if ($scope.bases[$stateParams.id]) {
+      $scope.base = $scope.bases[$stateParams.id];
+    }
+  }
   $scope.playBase = function() {
     if ($stateParams.id) {
       BaseList.play($scope.bases[$stateParams.id]);
       $scope.playBaseBtn = false;
-      $scope.pauseBaseBtn = true;
     }
   };
 
   $scope.pauseBase = function() {
     BaseList.pause();
     $scope.playBaseBtn = true;
-    $scope.pauseBaseBtn = false;
   };
-
-
-  if ($stateParams.id) {
-    $scope.title = $scope.bases[$stateParams.id].title;
-  }
 });
