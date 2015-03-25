@@ -42,8 +42,10 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   $scope.stopRecord = function() {
     $scope.startRecordBtn = true;
     $scope.playRecordBtn = true;
+    $scope.playBaseBtn = true;
     $scope.modal.show();
     $record.stop();
+    BaseList.pause();
   };
 
   $scope.playRecord = function() {
