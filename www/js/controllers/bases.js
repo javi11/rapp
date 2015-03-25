@@ -28,7 +28,7 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
 
   function OnSaved() {
     $ionicLoading.hide();
-    $scope.modal.show();
+    $scope.modal.hide();
     $scope.startRecordBtn = true;
     $scope.saveRecordBtn = false;
     $scope.playRecordBtn = false;
@@ -42,6 +42,7 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   $scope.stopRecord = function() {
     $scope.startRecordBtn = true;
     $scope.playRecordBtn = true;
+    $scope.modal.show();
     $record.stop();
   };
 
@@ -63,6 +64,7 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
     $scope.startRecordBtn = true;
     $scope.playRecordBtn = false;
     $scope.saveRecordBtn = false;
+    $scope.modal.hide();
   };
 
   $scope.saveRecord = function() {

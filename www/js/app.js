@@ -27,13 +27,11 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       //Create app directory
       var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
-        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
-        coverDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases/covers', false);
+        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false);
 
       rootDir
         .then(rapDir)
-        .then(basesDir)
-        .finally(coverDir);
+        .finally(basesDir);
 
     }
     if (window.StatusBar) {
@@ -45,12 +43,21 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
+  })
+
+  .state('app.home', {
+    url: '/home',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/home.html',
+        controller: 'AppCtrl'
+      }
+    }
   })
 
   .state('app.bases', {
@@ -83,5 +90,5 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/bases');
+  $urlRouterProvider.otherwise('/app/home');
 });

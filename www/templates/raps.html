@@ -1,4 +1,7 @@
 <ion-view view-title="Raps">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
   <ion-nav-buttons side="primary">
     <h1 class="title">Raps</h1>
     <div class="buttons">
@@ -11,7 +14,7 @@
     <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
       <ion-item ng-repeat="rap in raps" item="rap" class="item-remove-animate">
         <div ng-click="open(rap)">
-        {{rap.name}}
+          {{rap.name}}
         </div>
         <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(rap)">
         </ion-delete-button>
