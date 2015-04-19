@@ -17,6 +17,7 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
 
   $ionicModal.fromTemplateUrl('templates/records/save.html', {
     scope: $scope,
+
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
