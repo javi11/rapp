@@ -1,17 +1,28 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Guardado con éxito.</h1>
+    <h1 class="title">Grabado con éxito.</h1>
   </ion-header-bar>
   <ion-content class="has-header">
     <p>
-      Se ha guardado la grabación en tu móvil, ¿Qué quieres hacer ahora?
+      ¿Qué quieres hacer con esta grabación?
     </p>
-
-    <div class="button-bar">
-      <a class="button button-block ion-record button-assertive" href="#/app/record" ng-click="closeModal()">Grabar otro</a>
-      <a class="button button-block button-dark icon-right ion-chevron-right" href="#/app/raps" ng-click="closeModal()">Ver mis grabaciones</a>
+    
+    <div ng-show="playRecordBtn" class="button-bar">
+      <a class="button button-balanced" ng-click="showSaveForm()">GUARDAR</a>
+      <a class="button button-assertive" ng-click="recordAgain()">VOLVER A GRABAR</a>
     </div>
-
-
+    <form ng-submit="saveRecord()" ng-show="saveRecordBtn">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Nombre:</span>
+        <input type="text" ng-model="record.name" placeholder="Pon un nombre a esta grabación." />
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Descripción:</span>
+        <textarea placeholder="Pon una descripción a esta grabación." ng-model="record.text"></textarea>
+      </label>
+      <label class="item">
+        <button class="button button-block button-positive" type="submit">Guardar</button>
+      </label>
+    </form>
   </ion-content>
 </ion-modal-view>

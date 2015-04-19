@@ -5,7 +5,7 @@
  * Record service
  * @module record
  */
-services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList) {
+services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList, $q) {
 
   var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
   var mediaRec = null;
@@ -27,6 +27,48 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
   }
 
   /**
+   * Get record current position
+   *
+   * @method getCurrentPosition
+   */
+
+  function getCurrentPosition() {
+    var q = $q.defer();
+
+    mediaRec.getCurrentPosition(function(success) {
+      q.resolve(success);
+
+    }, function(error) {
+      q.reject(error);
+    });
+
+    return q.promise;
+  }
+
+  /**
+   * Get record duration
+   *
+   * @method getDuration
+   */
+
+  function getDuration() {
+
+    return mediaRec.getDuration();
+  }
+
+
+  /**
+   * Seek to in milliseconds
+   *
+   * @method seekTo
+   */
+
+  function seekTo(milliseconds) {
+
+    return mediaRec.seekTo(milliseconds);
+  }
+
+  /**
    * Stop record
    *
    * @method stopRecord
@@ -34,6 +76,16 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   function stopRecord() {
     mediaRec.stopRecord();
+  }
+
+  /**
+   * Set the volumen
+   *
+   * @method setVolume
+   */
+
+  function setVolume(volume) {
+    return mediaRec.setVolume(volume);
   }
 
   /**
@@ -104,7 +156,12 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
     stop: stopRecord,
     play: playRecord,
     pause: pauseRecord,
+    setVolume: setVolume,
+    getDuration: getDuration,
+    getCurrentPosition: getCurrentPosition,
+    seekTo: seekTo,
     name: getRecord,
+    getMedia : mediaRec,
     save: save
   };
 });

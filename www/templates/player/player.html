@@ -1,0 +1,25 @@
+<div class="list card">
+  <div class="item item-avatar">
+    <img src="avatar.jpg">
+    <h2>{{title}}</h2>
+    <p>{{description}}</p>
+  </div>
+  <div class="item item-image">
+    <img src="{{cover}}">
+  </div>
+  <div class="item tabs tabs-secondary tabs-icon-left">
+    <button class="button button-clear tab-item" ng-class="{'button-positive':playBtn,'button-energized':!playBtn}" ng-click="playBtn ? play() : pause()">
+      <i class="icon ion-play" ng-class="{'ion-play':playBtn,'ion-pause':!playBtn}"></i> {{playBtn? 'Play' : 'Pause'}}
+    </button>
+  </div>
+  <div class="range">
+    <i class="icon ion-volume-low"></i>
+    <input type="range" name="volume">
+    <i class="icon ion-volume-high"></i>
+  </div>
+  <div class="range">
+    {{elapse}}
+    <input type="range" name="elapse" ng-model="elapse">
+    {{duration}}
+  </div>
+</div>
