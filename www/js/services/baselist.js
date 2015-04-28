@@ -5,9 +5,9 @@
  * BaseList service
  * @module BaseList
  */
-services.factory('BaseList', function($cordovaMedia, APPDIR) {
+services.factory('BaseList', function($cordovaMedia, APPDIR, AudioSvc) {
 
-  var playing = null;
+  var playing = false;
 
   function getList(callback) {
     if (localStorage.bases) {
@@ -28,15 +28,20 @@ services.factory('BaseList', function($cordovaMedia, APPDIR) {
   }
 
   function playBase(base) {
-    console.log(cordova.file.externalRootDirectory + APPDIR + base.path + base.song);
-    playing = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + APPDIR + base.path + base.song);
-    // Play audio
-    playing.media.play();
+    AudioSvc.playAudio(cordova.file.externalRootDirectory + APPDIR + base.path + base.song, function(a) {
+      playing = true;
+      if (a < 0) {
+        pauseBase();
+      }
+    });
   }
 
   function pauseBase() {
     // Play audio
-    playing.media.pause();
+    if (playing) {
+      AudioSvc.pauseAudio();
+      playing = false;
+    }
   }
 
   return {

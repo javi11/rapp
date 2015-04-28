@@ -5,11 +5,10 @@
  * Record service
  * @module record
  */
-services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList, $q) {
+services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList) {
 
   var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
   var mediaRec = null;
-  var mediaPlayed = null;
   var OnCallback = null;
   var OnAppendData = {};
 
@@ -21,51 +20,9 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   function startRecord() {
     recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
-    mediaRec = $cordovaMedia.newMedia(recordName);
+    mediaRec = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + APPDIR + '/tmp/' + recordName);
     mediaRec = mediaRec.media;
     mediaRec.startRecord();
-  }
-
-  /**
-   * Get record current position
-   *
-   * @method getCurrentPosition
-   */
-
-  function getCurrentPosition() {
-    var q = $q.defer();
-
-    mediaRec.getCurrentPosition(function(success) {
-      q.resolve(success);
-
-    }, function(error) {
-      q.reject(error);
-    });
-
-    return q.promise;
-  }
-
-  /**
-   * Get record duration
-   *
-   * @method getDuration
-   */
-
-  function getDuration() {
-
-    return mediaRec.getDuration();
-  }
-
-
-  /**
-   * Seek to in milliseconds
-   *
-   * @method seekTo
-   */
-
-  function seekTo(milliseconds) {
-
-    return mediaRec.seekTo(milliseconds);
   }
 
   /**
@@ -76,16 +33,6 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   function stopRecord() {
     mediaRec.stopRecord();
-  }
-
-  /**
-   * Set the volumen
-   *
-   * @method setVolume
-   */
-
-  function setVolume(volume) {
-    return mediaRec.setVolume(volume);
   }
 
   /**
@@ -127,41 +74,11 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   }
 
-  /**
-   * Play record
-   *
-   * @method playRecord
-   */
-
-  function playRecord() {
-    mediaPlayed = $cordovaMedia.newMedia(recordName);
-    // Play audio
-    mediaPlayed.media.play();
-  }
-
-  /**
-   * Play record
-   *
-   * @method playRecord
-   */
-
-  function pauseRecord() {
-    // Play audio
-    mediaPlayed.media.pause();
-  }
-
-
   return {
     start: startRecord,
     stop: stopRecord,
-    play: playRecord,
-    pause: pauseRecord,
-    setVolume: setVolume,
-    getDuration: getDuration,
-    getCurrentPosition: getCurrentPosition,
-    seekTo: seekTo,
     name: getRecord,
-    getMedia : mediaRec,
+    getMedia: mediaRec,
     save: save
   };
 });
