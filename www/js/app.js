@@ -27,10 +27,13 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       //Create app directory
       var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
-        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false);
+        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
+        tempDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/tmp', false);
+
 
       rootDir
         .then(rapDir)
+        .then(tempDir)
         .finally(basesDir);
 
     }
@@ -43,12 +46,12 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
+    .state('app', {
+      url: '/app',
+      abstract: true,
+      templateUrl: 'templates/menu.html',
+      controller: 'AppCtrl'
+    })
 
   .state('app.home', {
     url: '/home',

@@ -1,7 +1,7 @@
-/* global app */
+/* global app, cordova */
 'use strict';
 
-app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR) {
+app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc) {
   $scope.recording = false;
   $scope.APPDIR = APPDIR;
   $scope.record = {
@@ -15,14 +15,55 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
   $scope.playRecordBtn = false;
   $scope.playBaseBtn = true;
 
-  $ionicModal.fromTemplateUrl('templates/records/save.html', {
+  $ionicModal.fromTemplateUrl('templates/player/player.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
   });
 
-  $scope.closeModal = function() {
+  $rootScope.player = function() {
+    $scope.modal.show();
+    $ionicPlatform.ready(function() {
+      AudioSvc.playAudio(cordova.file.externalRootDirectory + APPDIR + '/tmp/' + $record.name(), function(a, b) {
+        $scope.position = Math.ceil(a / b * 100);
+        if (a < 0) {
+          $scope.stopAudio();
+        }
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
+      });
+      $scope.loaded = true;
+      $scope.isPlaying = true;
+      $scope.name = $record.name();
+      $scope.path = $record.name();
+      $scope.pauseAudio = function() {
+        AudioSvc.pauseAudio();
+        $scope.isPlaying = false;
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
+      };
+      $scope.resumeAudio = function() {
+        AudioSvc.resumeAudio();
+        $scope.isPlaying = true;
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
+      };
+      $scope.stopAudio = function() {
+        AudioSvc.stopAudio();
+        $scope.loaded = false;
+        $scope.isPlaying = false;
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
+      };
+    });
+  };
+
+  $rootScope.closeModal = function() {
     $scope.modal.hide();
   };
 
@@ -43,19 +84,11 @@ app.controller('BasesCtrl', function($scope, $record, $location, $ionicLoading, 
     $scope.startRecordBtn = true;
     $scope.playRecordBtn = true;
     $scope.playBaseBtn = true;
-    $scope.modal.show();
+    // show the player
+    $scope.player();
+
     $record.stop();
     BaseList.pause();
-  };
-
-  $scope.playRecord = function() {
-    $scope.playRecordBtn = false;
-    $record.play();
-  };
-
-  $scope.pauseRecord = function() {
-    $scope.playRecordBtn = true;
-    $record.pause();
   };
 
   $scope.showSaveForm = function() {
