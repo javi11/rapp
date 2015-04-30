@@ -15,6 +15,13 @@ services.factory('RapList', function() {
     }
   }
 
+  function updateList(raps, callback) {
+    if (localStorage.myRaps) {
+      localStorage.setItem('myRaps', JSON.stringify(raps));
+    }
+    callback();
+  }
+
   function saveRap(rap, callback) {
     saveObject('myRaps', rap);
     callback();
@@ -28,6 +35,7 @@ services.factory('RapList', function() {
   return {
     getAll: getList,
     save: saveRap,
-    'delete' : deleteRap
+    'delete': deleteRap,
+    update: updateList
   };
 });

@@ -9,8 +9,6 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
   var mediaRec = null;
-  var OnCallback = null;
-  var OnAppendData = {};
 
   /**
    * Start a record
@@ -53,9 +51,12 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    */
   function fail(err) {
     console.log('Error');
-    console.log(err);
+    console.log(JSON.stringify(err));
   }
 
+  function clearTmp(done) {
+    $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName).then(done, fail);
+  }
 
   /**
    * Save the recorded file to the server
@@ -63,15 +64,12 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    * @method save
    */
 
-  function save(callback, appendData) {
-    OnCallback = callback;
-    OnAppendData = appendData;
-    OnAppendData.path = APPDIR + '/rap';
-    RapList.save(OnAppendData, function() {
-      $cordovaFile.moveFile(cordova.file.externalRootDirectory, recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', appendData.name + '.mp3')
-        .then(OnCallback, fail);
+  function save(data, done) {
+    data.path = APPDIR + '/rap';
+    RapList.save(data, function() {
+      $cordovaFile.moveFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', data.name + '.mp3')
+        .then(done, fail);
     });
-
   }
 
   return {
@@ -79,6 +77,7 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
     stop: stopRecord,
     name: getRecord,
     getMedia: mediaRec,
-    save: save
+    save: save,
+    clearTmp: clearTmp
   };
 });

@@ -1,13 +1,11 @@
-/*global services, saveObject, deleteObject, cordova*/
+/*global services, saveObject, deleteObject*/
 
 'use strict';
 /**
  * BaseList service
  * @module BaseList
  */
-services.factory('BaseList', function($cordovaMedia, APPDIR, AudioSvc) {
-
-  var playing = false;
+services.factory('BaseList', function() {
 
   function getList(callback) {
     if (localStorage.bases) {
@@ -27,28 +25,9 @@ services.factory('BaseList', function($cordovaMedia, APPDIR, AudioSvc) {
     callback();
   }
 
-  function playBase(base) {
-    AudioSvc.playAudio(cordova.file.externalRootDirectory + APPDIR + base.path + base.song, function(a) {
-      playing = true;
-      if (a < 0) {
-        pauseBase();
-      }
-    });
-  }
-
-  function pauseBase() {
-    // Play audio
-    if (playing) {
-      AudioSvc.pauseAudio();
-      playing = false;
-    }
-  }
-
   return {
     getAll: getList,
     save: saveBase,
-    'delete': deleteBase,
-    play: playBase,
-    pause: pauseBase
+    'delete': deleteBase
   };
 });

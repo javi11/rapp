@@ -3,16 +3,12 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="primary">
-    <h1 class="title">Raps</h1>
-    <div class="buttons">
-      <button class="button" ng-click="data.showDelete = !data.showDelete; data.showReorder = !data.showReorder">
-        Editar
-      </button>
-    </div>
+    <button  class="button button-icon ion-ios-compose-outline" ng-click="data.showDelete = !data.showDelete; data.showReorder = !data.showReorder; data.edit = !data.edit">
+    </button>
   </ion-nav-buttons>
   <ion-content>
     <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-      <ion-item ng-repeat="rap in raps" item="rap" class="item-remove-animate">
+      <ion-item ng-repeat="rap in raps" item="rap" class="item-remove-animate" ng-click="!data.edit? open(rap) : ''">
         <div ng-click="open(rap)">
           {{rap.name}}
         </div>
