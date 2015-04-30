@@ -154,6 +154,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
   if ($stateParams.id) {
     if ($scope.bases[$stateParams.id]) {
       $scope.base = $scope.bases[$stateParams.id];
+      console.log($scope.base);
       $ionicPlatform.ready(function() {
         AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
       });
