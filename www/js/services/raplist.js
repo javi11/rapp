@@ -23,8 +23,7 @@ services.factory('RapList', function() {
   }
 
   function saveRap(rap, callback) {
-    saveObject('myRaps', rap);
-    callback();
+    saveObject('myRaps', rap, callback);
   }
 
   function deleteRap(rap, callback) {

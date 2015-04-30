@@ -1,7 +1,7 @@
 /* global app, cordova */
 'use strict';
 
-app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc) {
+app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc, $timeout) {
   $scope.recording = false;
   $scope.APPDIR = APPDIR;
   $scope.record = {
@@ -64,8 +64,17 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
     AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
   };
 
-  function OnSaved() {
+  function OnSaved(err) {
     $ionicLoading.hide();
+    if (err) {
+      $ionicLoading.show({
+        template: err
+      });
+      $timeout(function() {
+        $ionicLoading.hide();
+      }, 2000);
+      return;
+    }
     $scope.modal.hide();
     $scope.startRecordBtn = true;
     $scope.saveRecordBtn = false;
@@ -93,18 +102,21 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
   };
 
   $scope.recordAgain = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('modal.hidden', function() {
     $scope.startRecordBtn = true;
     $scope.playRecordBtn = false;
     $scope.saveRecordBtn = false;
-    $scope.modal.hide();
     $record.clearTmp(function() {
       AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
     });
-  };
+  });
 
   $scope.saveRecord = function() {
     $ionicLoading.show({
-      template: 'Cargando...'
+      template: 'Cargando.'
     });
     console.log('SAVE RECORD');
     $record.save($scope.record, OnSaved);
@@ -128,7 +140,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
   }, {
     id: 3,
     title: 'Diam\'s - La Boulette',
-    path: '/bases/Diam',
+    path: '/bases/Diam/',
     song: 'Diam - La Boulette.mp3'
   }, {
     id: 4,
@@ -153,8 +165,16 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
   }];
   if ($stateParams.id) {
     if ($scope.bases[$stateParams.id]) {
+      if (!localStorage.notFirstTime) {
+        $ionicLoading.show({
+          template: 'Si tiene los auriculares conectado desconectelos para añadir la base, por favor.'
+        });
+        $timeout(function() {
+          $ionicLoading.hide();
+          localStorage.setItem('notFirstTime', true);
+        }, 6000);
+      }
       $scope.base = $scope.bases[$stateParams.id];
-      console.log($scope.base);
       $ionicPlatform.ready(function() {
         AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
       });
@@ -166,7 +186,6 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
       $ionicPlatform.ready(function() {
         AudioSvc.playAudio(function(a, b) {
           $scope.position = Math.ceil(a / b * 100);
-          console.log(a);
           if (a < 0) {
             $scope.pauseBase();
           }

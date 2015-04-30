@@ -66,9 +66,14 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
 
   function save(data, done) {
     data.path = APPDIR + '/rap';
-    RapList.save(data, function() {
+    RapList.save(data, function(err) {
+      if (err) {
+        return done(err);
+      }
       $cordovaFile.moveFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', data.name + '.mp3')
-        .then(done, fail);
+        .then(function() {
+          done();
+        }, fail);
     });
   }
 

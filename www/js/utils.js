@@ -26,16 +26,18 @@ function randomString(len, an) {
 }
 
 function findIndex(array, name) {
-  var i = 0;
+  var i = 0,
+    found = false;
   for (i = 0; i < array.length; i++) {
     if (array[i].name === name) {
-      return i;
+      found = i;
+      break;
     }
   }
-  return i;
+  return found;
 }
 
-function saveObject(db, object) {
+function saveObject(db, object, cb) {
   var array = [];
   if (!localStorage[db]) {
     localStorage[db] = [];
@@ -44,12 +46,13 @@ function saveObject(db, object) {
   }
   var exist = findIndex(array, object.name);
   if (exist) {
-    array[exist] = object;
+    return cb('El nombre ya existe.');
   } else {
     array.push(object);
   }
 
   localStorage.setItem(db, JSON.stringify(array));
+  cb();
 }
 
 function deleteObject(db, object) {
