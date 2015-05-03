@@ -4,9 +4,10 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="base in bases" href="#/app/bases/{{base.id}}">
-        {{base.title}}
-      </ion-item>
+      <a class="item item-icon-left item-icon-right" ng-repeat="base in bases" href="#/app/bases/{{base.id}}">
+        <i class="icon ion-music-note"></i> {{base.title}}
+        <i ng-show='!base.downloaded' class="icon ion-ios-cloud-download-outline"></i>
+      </a>
     </ion-list>
   </ion-content>
 </ion-view>

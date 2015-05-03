@@ -126,42 +126,50 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
     id: 0,
     title: 'Aron Beats - Nosotros viviremos',
     path: '/bases/Aaron Beats/',
-    song: 'Aron Beats - Nosotros viviremos.mp3'
+    song: 'Aron Beats - Nosotros viviremos.mp3',
+    downloaded: false
   }, {
     id: 1,
     title: 'Army of the pharaohs - Dumb the clip',
     path: '/bases/Army of the pharaohs/',
-    song: 'Army of the pharaohs - Dumb the clip.mp3'
+    song: 'Army of the pharaohs - Dumb the clip.mp3',
+    downloaded: true
   }, {
     id: 2,
     title: 'Baghira - Bozal',
     path: '/bases/Baghira/',
-    song: 'Baghira - Bozal.mp3'
+    song: 'Baghira - Bozal.mp3',
+    downloaded: false
   }, {
     id: 3,
     title: 'Diam\'s - La Boulette',
     path: '/bases/Diam/',
-    song: 'Diam - La Boulette.mp3'
+    song: 'Diam - La Boulette.mp3',
+    downloaded: false
   }, {
     id: 4,
     title: 'Eminem at Westwood',
     path: '/bases/Eminem/',
-    song: 'Eminem at Westwood.mp3'
+    song: 'Eminem at Westwood.mp3',
+    downloaded: true
   }, {
     id: 5,
     title: 'Flowklorikos - Kloroformo',
     path: '/bases/Flowklorikos/',
-    song: 'Flowklorikos - Kloroformo.mp3'
+    song: 'Flowklorikos - Kloroformo.mp3',
+    downloaded: false
   }, {
     id: 6,
     title: 'Full Clip - Gangstarr',
     path: '/bases/Full Clip/',
-    song: 'Full Clip - Gangstarr.mp3'
+    song: 'Full Clip - Gangstarr.mp3',
+    downloaded: false
   }, {
     id: 7,
     title: 'Baghira - Red instrumental 96 bpm',
     path: '/bases/Baghira/',
-    song: 'Baghira - Red instrumental 96 bpm.mp3'
+    song: 'Baghira - Red instrumental 96 bpm.mp3',
+    downloaded: false
   }];
   if ($stateParams.id) {
     if ($scope.bases[$stateParams.id]) {
