@@ -1,33 +1,26 @@
-/*global services, saveObject, deleteObject*/
+/*global services*/
 
 'use strict';
 /**
  * BaseList service
  * @module BaseList
  */
-services.factory('BaseList', function() {
+services.factory('BaseList', function($resource) {
 
-  function getList(callback) {
-    if (localStorage.bases) {
-      callback(null, JSON.parse(localStorage.getItem('bases')));
-    } else {
-      callback('No hay raps.', []);
+  var Bases = {
+    call: $resource('https://docs.google.com/uc?export=download&id=0B81Cf13ty16VVThSSXlnN2l0Wlk', {}, {
+      get: {
+        isArray: true,
+        method: 'get',
+        cache: true,
+        transformResponse: function(data) {
+          return JSON.parse(data);
+        }
+      }
+    }),
+    downloadBase : function() {
+
     }
-  }
-
-  function saveBase(base, callback) {
-    saveObject('bases', base);
-    callback();
-  }
-
-  function deleteBase(base, callback) {
-    deleteObject('bases', base);
-    callback();
-  }
-
-  return {
-    getAll: getList,
-    save: saveBase,
-    'delete': deleteBase
   };
+  return Bases;
 });
