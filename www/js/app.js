@@ -23,7 +23,6 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
       //Create app directory
       var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),

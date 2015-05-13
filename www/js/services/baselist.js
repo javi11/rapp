@@ -5,7 +5,7 @@
  * BaseList service
  * @module BaseList
  */
-services.factory('BaseList', function($resource) {
+services.factory('BaseList', function($resource, $cordovaSQLite, config) {
 
   var Bases = {
     call: $resource('https://docs.google.com/uc?export=download&id=0B81Cf13ty16VVThSSXlnN2l0Wlk', {}, {
@@ -18,8 +18,12 @@ services.factory('BaseList', function($resource) {
         }
       }
     }),
-    downloadBase : function() {
+    downloadBase: function() {
 
+
+    },
+    getBases: function() {
+      var db = $cordovaSQLite.openDB(config.APPDB);
     }
   };
   return Bases;
