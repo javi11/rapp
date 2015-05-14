@@ -16,6 +16,7 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.media",
-    "org.apache.cordova.file"
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer"
   ]
 }

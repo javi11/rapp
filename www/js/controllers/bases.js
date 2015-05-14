@@ -1,7 +1,7 @@
 /* global app, cordova */
 'use strict';
 
-app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc, $timeout) {
+app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $ionicPopup, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc) {
   $scope.recording = false;
   $scope.APPDIR = APPDIR;
   $scope.record = {
@@ -67,12 +67,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
   function OnSaved(err) {
     $ionicLoading.hide();
     if (err) {
-      $ionicLoading.show({
-        template: err
-      });
-      $timeout(function() {
-        $ionicLoading.hide();
-      }, 2000);
+      $cordovaProgress.showText(false, 5000, err);
       return;
     }
     $scope.modal.hide();
@@ -121,66 +116,30 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
     console.log('SAVE RECORD');
     $record.save($scope.record, OnSaved);
   };
-
-  $scope.bases = [{
-    id: 0,
-    title: 'Aron Beats - Nosotros viviremos',
-    path: '/bases/Aaron Beats/',
-    song: 'Aron Beats - Nosotros viviremos.mp3',
-    downloaded: false
-  }, {
-    id: 1,
-    title: 'Army of the pharaohs - Dumb the clip',
-    path: '/bases/Army of the pharaohs/',
-    song: 'Army of the pharaohs - Dumb the clip.mp3',
-    downloaded: true
-  }, {
-    id: 2,
-    title: 'Baghira - Bozal',
-    path: '/bases/Baghira/',
-    song: 'Baghira - Bozal.mp3',
-    downloaded: false
-  }, {
-    id: 3,
-    title: 'Diam\'s - La Boulette',
-    path: '/bases/Diam/',
-    song: 'Diam - La Boulette.mp3',
-    downloaded: false
-  }, {
-    id: 4,
-    title: 'Eminem at Westwood',
-    path: '/bases/Eminem/',
-    song: 'Eminem at Westwood.mp3',
-    downloaded: true
-  }, {
-    id: 5,
-    title: 'Flowklorikos - Kloroformo',
-    path: '/bases/Flowklorikos/',
-    song: 'Flowklorikos - Kloroformo.mp3',
-    downloaded: false
-  }, {
-    id: 6,
-    title: 'Full Clip - Gangstarr',
-    path: '/bases/Full Clip/',
-    song: 'Full Clip - Gangstarr.mp3',
-    downloaded: false
-  }, {
-    id: 7,
-    title: 'Baghira - Red instrumental 96 bpm',
-    path: '/bases/Baghira/',
-    song: 'Baghira - Red instrumental 96 bpm.mp3',
-    downloaded: false
-  }];
+  $ionicPlatform.ready(function() {
+    $ionicLoading.show({
+      template: 'Cargando.'
+    });
+    BaseList.call.get().$promise.then(function(bases) {
+      $scope.bases = bases;
+      BaseList.getDownloadedBases().then(function(downloadedBases) {
+        $scope.bases.map(function(base) {
+          if (downloadedBases.rows.length > 0 && downloadedBases.rows.indexOf(base.id)) {
+            base.downloaded = true;
+          }
+          return base;
+        });
+        $ionicLoading.hide();
+      }, function(err) {
+        console.log(JSON.stringify(err));
+        $ionicLoading.hide();
+      });
+    });
+  });
   if ($stateParams.id) {
     if ($scope.bases[$stateParams.id]) {
       if (!localStorage.notFirstTime) {
-        $ionicLoading.show({
-          template: 'Si tiene los auriculares conectado desconectelos para añadir la base, por favor.'
-        });
-        $timeout(function() {
-          $ionicLoading.hide();
-          localStorage.setItem('notFirstTime', true);
-        }, 6000);
+        $cordovaProgress.showText(false, 5000, 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.');
       }
       $scope.base = $scope.bases[$stateParams.id];
       $ionicPlatform.ready(function() {
@@ -188,6 +147,38 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $rootScope, $record
       });
     }
   }
+  $scope.goToBase = function(base) {
+    if (base.downloaded) {
+      $location.path('/app/bases/' + base.id);
+    } else {
+      var confirmPopup = $ionicPopup.confirm({
+        title: base.title,
+        template: 'No tienes esta base descargada, ¿Qiueres descargarla?',
+        buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
+          text: 'En otro momento',
+          type: 'button-default',
+          onTap: function() {
+            return false;
+          }
+        }, {
+          text: 'Descargar',
+          type: 'button-positive',
+          onTap: function() {
+            return true;
+          }
+        }]
+      });
+      confirmPopup.then(function(res) {
+        if (res) {
+          BaseList.download(base).then(function(res) {
+            console.log(res);
+          }, function(err) {
+            console.log(JSON.stringify(err));
+          });
+        }
+      });
+    }
+  };
   $scope.playBase = function() {
     if ($stateParams.id) {
       $scope.playBaseBtn = false;

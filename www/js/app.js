@@ -8,32 +8,39 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var app = angular.module('starter', ['ionic', 'ngCordova', 'config', 'starter.controllers', 'starter.services']);
+var app = angular.module('starter', ['ionic', 'ngCordova', 'ngResource', 'config', 'starter.controllers', 'starter.services']);
 
 /**
  * Module of services.
  * @property services
  */
 var services = angular.module('starter.services', []);
+var db = null;
 
-
-app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
+app.run(function($ionicPlatform, $cordovaFile, $cordovaSQLite, APPDIR, APPDB) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      if (!db) {
+        db = $cordovaSQLite.openDB({
+          name: APPDB,
+          location: 1
+        });
+      }
       //Create app directory
       var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
         basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
-        tempDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/tmp', false);
-
+        tempDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/tmp', false),
+        basesTable = $cordovaSQLite.execute(db, 'CREATE TABLE IF NOT EXISTS bases (id integer primary key, title text, path text, song text, downloaded boolean)');
 
       rootDir
         .then(rapDir)
         .then(tempDir)
-        .finally(basesDir);
+        .then(basesDir)
+        .finally(basesTable);
 
     }
     if (window.StatusBar) {
