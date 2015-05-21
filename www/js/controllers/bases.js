@@ -123,6 +123,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     BaseList.call.get().$promise.then(function(bases) {
       $scope.bases = bases;
       BaseList.getDownloadedBases().then(function(downloadedBases) {
+        console.log(downloadedBases.rows.length);
         $scope.bases.map(function(base) {
           if (downloadedBases.rows.length > 0 && downloadedBases.rows.indexOf(base.id)) {
             base.downloaded = true;
@@ -130,23 +131,23 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
           return base;
         });
         $ionicLoading.hide();
+        if ($stateParams.id) {
+          if ($scope.bases[$stateParams.id]) {
+            if (!localStorage.notFirstTime) {
+              $cordovaProgress.showText(false, 5000, 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.');
+            }
+            $scope.base = $scope.bases[$stateParams.id];
+            $ionicPlatform.ready(function() {
+              AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+            });
+          }
+        }
       }, function(err) {
         console.log(JSON.stringify(err));
         $ionicLoading.hide();
       });
     });
   });
-  if ($stateParams.id) {
-    if ($scope.bases[$stateParams.id]) {
-      if (!localStorage.notFirstTime) {
-        $cordovaProgress.showText(false, 5000, 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.');
-      }
-      $scope.base = $scope.bases[$stateParams.id];
-      $ionicPlatform.ready(function() {
-        AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
-      });
-    }
-  }
   $scope.goToBase = function(base) {
     if (base.downloaded) {
       $location.path('/app/bases/' + base.id);
@@ -170,10 +171,18 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
       });
       confirmPopup.then(function(res) {
         if (res) {
-          BaseList.download(base).then(function(res) {
-            console.log(res);
+          $ionicLoading.show({
+            template: 'Descargando base.'
+          });
+          BaseList.download(base).then(function() {
+            var index = $scope.bases.indexOf(base);
+            $scope.bases[index].downloaded = true;
+            $ionicLoading.hide();
           }, function(err) {
             console.log(JSON.stringify(err));
+            var index = $scope.bases.indexOf(base);
+            $scope.bases[index].downloaded = true;
+            $ionicLoading.hide();
           });
         }
       });

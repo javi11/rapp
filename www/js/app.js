@@ -34,7 +34,7 @@ app.run(function($ionicPlatform, $cordovaFile, $cordovaSQLite, APPDIR, APPDB) {
         rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
         basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
         tempDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/tmp', false),
-        basesTable = $cordovaSQLite.execute(db, 'CREATE TABLE IF NOT EXISTS bases (id integer primary key, title text, path text, song text, downloaded boolean)');
+        basesTable = $cordovaSQLite.execute(db, 'CREATE TABLE IF NOT EXISTS BASES (id INTEGER PRIMARY KEY, title TEXT, path TEXT, song TEXT, downloaded BOOLEAN)');
 
       rootDir
         .then(rapDir)

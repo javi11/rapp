@@ -24,11 +24,11 @@ services
           coverPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/cover.jpg',
           trustHosts = true,
           options = {},
-          query = 'INSERT INTO bases (id, title, path, song, downloaded) VALUES (' + base.id + ',\'' + base.title + '\',\'/bases/' + base.path + '\',\'' + base.title + '.mp3\', true)',
+          query = 'INSERT INTO BASES (id, title, path, song, downloaded) VALUES (' + base.id + ',\'' + base.title + '\',\'/bases/' + base.path + '\',\'' + base.title + '.mp3\', true)',
           baseDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
           downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
           downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts),
-          addToDB = $cordovaSQLite.execute(db, query, ['test', 100]);
+          addToDB = $cordovaSQLite.execute(db, query);
 
         return baseDir
           .then(downloadBase)
