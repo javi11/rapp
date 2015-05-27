@@ -1,4 +1,4 @@
-/*global services, cordova, db*/
+/*global services, cordova*/
 
 'use strict';
 /**
@@ -6,7 +6,7 @@
  * @module BaseList
  */
 services
-  .factory('BaseList', function($resource, $cordovaSQLite, $cordovaFileTransfer, $cordovaFile, APPDIR) {
+  .factory('BaseList', function($resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q) {
 
     var Bases = {
       call: $resource('https://rawgit.com/javi11/rapp/master/bases.json', {}, {
@@ -20,24 +20,47 @@ services
         }
       }),
       download: function(base) {
-        var targetPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/' + base.title + '.mp3',
-          coverPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/cover.jpg',
-          trustHosts = true,
-          options = {},
-          query = 'INSERT INTO BASES (id, title, path, song, downloaded) VALUES (' + base.id + ',\'' + base.title + '\',\'/bases/' + base.path + '\',\'' + base.title + '.mp3\', true)',
-          baseDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
-          downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
-          downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts),
-          addToDB = $cordovaSQLite.execute(db, query);
+        var deferred = $q.defer();
+        $indexedDB.openStore('bases', function(store) {
+          var targetPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/' + base.title + '.mp3',
+            coverPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/cover.jpg',
+            trustHosts = true,
+            options = {},
+            baseDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
+            downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
+            downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts),
+            addToDB = store.insert({
+              'id': base.id,
+              'title': base.title,
+              'path': '/bases/' + base.path + '/',
+              'song': base.title + '.mp3',
+              'downloaded': true
+            });
 
-        return baseDir
-          .then(downloadBase)
-          .then(downloadCover)
-          .then(addToDB);
+          baseDir
+            .then(downloadBase)
+            .then(downloadCover)
+            .then(addToDB)
+            .then(function(e) {
+              deferred.resolve(e);
+            }, function(error) {
+              deferred.resolve(error);
+            });
+        });
+        return deferred.promise;
       },
       getDownloadedBases: function() {
-        var query = 'SELECT id FROM bases';
-        return $cordovaSQLite.execute(db, query, []);
+        var deferred = $q.defer();
+        $indexedDB.openStore('bases', function(store) {
+          store.getAll().then(function(bases) {
+            deferred.resolve({
+              bases: bases
+            });
+          }, function(error) {
+            deferred.resolve(error);
+          });
+        });
+        return deferred.promise;
       }
     };
     return Bases;

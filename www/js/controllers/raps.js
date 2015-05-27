@@ -79,21 +79,29 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
       template: '¿Estás seguro que quieres borrarlo?',
       buttons: [{
         text: 'No',
-        type: 'button-assertive'
+        type: 'button-assertive',
+        onTap: function() {
+          return false;
+        }
       }, {
-        text: '<b>Sí</b>'
+        text: '<b>Sí</b>',
+        onTap: function() {
+          return true;
+        }
       }]
     });
     confirmPopup.then(function(res) {
+      console.log(res);
       if (res) {
-        $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
-          RapList.delete(item, function() {
-            $scope.raps.splice($scope.raps.indexOf(item), 1);
-          });
-        }, fail);
+        $ionicPlatform.ready(function() {
+          $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
+            RapList.delete(item, function() {
+              $scope.raps.splice($scope.raps.indexOf(item), 1);
+            });
+          }, fail);
+        });
       }
     });
-
   };
 
   $scope.open = function(item) {

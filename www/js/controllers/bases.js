@@ -123,9 +123,11 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     BaseList.call.get().$promise.then(function(bases) {
       $scope.bases = bases;
       BaseList.getDownloadedBases().then(function(downloadedBases) {
-        console.log(downloadedBases.rows.length);
+        var basesId = downloadedBases.bases.map(function(downloaded) {
+          return downloaded.id;
+        });
         $scope.bases.map(function(base) {
-          if (downloadedBases.rows.length > 0 && downloadedBases.rows.indexOf(base.id)) {
+          if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
             base.downloaded = true;
           }
           return base;
@@ -134,16 +136,22 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
         if ($stateParams.id) {
           if ($scope.bases[$stateParams.id]) {
             if (!localStorage.notFirstTime) {
-              $cordovaProgress.showText(false, 5000, 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.');
+              var alertPopup = $ionicPopup.alert({
+                title: 'Alerta!',
+                template: 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.'
+              });
+              alertPopup.then(function() {
+                localStorage.setItem('notFirstTime', true);
+              });
             }
-            $scope.base = $scope.bases[$stateParams.id];
+            $scope.base = downloadedBases.bases[$stateParams.id];
+            console.log($scope.base.path);
             $ionicPlatform.ready(function() {
               AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
             });
           }
         }
-      }, function(err) {
-        console.log(JSON.stringify(err));
+      }, function() {
         $ionicLoading.hide();
       });
     });
@@ -178,8 +186,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
             var index = $scope.bases.indexOf(base);
             $scope.bases[index].downloaded = true;
             $ionicLoading.hide();
-          }, function(err) {
-            console.log(JSON.stringify(err));
+          }, function() {
             var index = $scope.bases.indexOf(base);
             $scope.bases[index].downloaded = true;
             $ionicLoading.hide();
