@@ -8,6 +8,10 @@
 services
   .factory('BaseList', function($resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q) {
 
+    function randomString(length) {
+      return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+    }
+
     var Bases = {
       call: $resource('https://rawgit.com/javi11/rapp/master/bases.json', {}, {
         get: {
@@ -30,6 +34,7 @@ services
             downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
             downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts),
             addToDB = store.insert({
+              '_id': randomString(32),
               'id': base.id,
               'title': base.title,
               'path': '/bases/' + base.path + '/',
@@ -56,6 +61,17 @@ services
             deferred.resolve({
               bases: bases
             });
+          }, function(error) {
+            deferred.resolve(error);
+          });
+        });
+        return deferred.promise;
+      },
+      getBase: function(id) {
+        var deferred = $q.defer();
+        $indexedDB.openStore('bases', function(store) {
+          store.findWhere(store.query().$index('id_idx').$eq(Number(id))).then(function(base) {
+            deferred.resolve(base);
           }, function(error) {
             deferred.resolve(error);
           });

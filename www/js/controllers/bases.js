@@ -133,28 +133,28 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
           return base;
         });
         $ionicLoading.hide();
-        if ($stateParams.id) {
-          if ($scope.bases[$stateParams.id]) {
-            if (!localStorage.notFirstTime) {
-              var alertPopup = $ionicPopup.alert({
-                title: 'Alerta!',
-                template: 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.'
-              });
-              alertPopup.then(function() {
-                localStorage.setItem('notFirstTime', true);
-              });
-            }
-            $scope.base = downloadedBases.bases[$stateParams.id];
-            console.log($scope.base.path);
-            $ionicPlatform.ready(function() {
-              AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
-            });
-          }
-        }
       }, function() {
         $ionicLoading.hide();
       });
     });
+    if ($stateParams.id) {
+      if (!localStorage.notFirstTime) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'Alerta!',
+          template: 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.'
+        });
+        alertPopup.then(function() {
+          localStorage.setItem('notFirstTime', true);
+        });
+      }
+      BaseList.getBase($stateParams.id).then(function(base) {
+        console.log(JSON.stringify(base));
+        $scope.base = base[0];
+        $ionicPlatform.ready(function() {
+          AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+        });
+      });
+    }
   });
   $scope.goToBase = function(base) {
     if (base.downloaded) {
