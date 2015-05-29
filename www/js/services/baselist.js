@@ -1,4 +1,4 @@
-/*global services, cordova*/
+/*global services, cordova, randomString*/
 
 'use strict';
 /**
@@ -7,10 +7,6 @@
  */
 services
   .factory('BaseList', function($resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q) {
-
-    function randomString(length) {
-      return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
-    }
 
     var Bases = {
       call: $resource('https://rawgit.com/javi11/rapp/master/bases.json', {}, {

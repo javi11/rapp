@@ -8,6 +8,12 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
     console.log(JSON.stringify(err));
   }
 
+  function getRapList() {
+    RapList.getAll().then(function(list) {
+      $scope.raps = list;
+    }, fail);
+  }
+
   $scope.raps = [];
   $scope.selected = null;
 
@@ -18,9 +24,7 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
     $scope.modal = modal;
   });
 
-  RapList.getAll(function(err, list) {
-    $scope.raps = list;
-  });
+  getRapList();
 
   $rootScope.player = function() {
     $scope.modal.show();
@@ -70,7 +74,6 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
   $scope.moveItem = function(item, fromIndex, toIndex) {
     $scope.raps.splice(fromIndex, 1);
     $scope.raps.splice(toIndex, 0, item);
-    RapList.update($scope.raps, function() {});
   };
 
   $scope.onItemDelete = function(item) {
@@ -91,13 +94,12 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
       }]
     });
     confirmPopup.then(function(res) {
-      console.log(res);
       if (res) {
         $ionicPlatform.ready(function() {
           $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
-            RapList.delete(item, function() {
+            RapList.delete(item).then(function() {
               $scope.raps.splice($scope.raps.indexOf(item), 1);
-            });
+            }, fail);
           }, fail);
         });
       }
@@ -115,13 +117,6 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
     $scope.stopAudio();
   };
 
-  $scope.$on(
-    'addRap',
-    function getRapList() {
-      RapList.getAll(function(err, list) {
-        $scope.raps = list;
-      });
-    }
-  );
+  $scope.$on('addRap', getRapList);
 
 });

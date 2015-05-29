@@ -114,7 +114,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
       template: 'Cargando.'
     });
     console.log('SAVE RECORD');
-    $record.save($scope.record, OnSaved);
+    $record.save($scope.record).then(OnSaved, OnSaved);
   };
   $ionicPlatform.ready(function() {
     $ionicLoading.show({

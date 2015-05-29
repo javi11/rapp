@@ -1,40 +1,65 @@
-/*global services, saveObject, deleteObject*/
+/*global services, randomString*/
 
 'use strict';
 /**
  * RapList service
  * @module RapList
  */
-services.factory('RapList', function() {
+services.factory('RapList', function($indexedDB, $q) {
 
-  function getList(callback) {
-    if (localStorage.myRaps) {
-      callback(null, JSON.parse(localStorage.getItem('myRaps')));
-    } else {
-      callback('No hay raps.', []);
-    }
+  function getList() {
+    var deferred = $q.defer();
+    $indexedDB.openStore('raps', function(store) {
+      store.getAll().then(function(bases) {
+        deferred.resolve(bases);
+      }, function(e) {
+        deferred.reject(e);
+      });
+    });
+    return deferred.promise;
   }
 
-  function updateList(raps, callback) {
-    if (localStorage.myRaps) {
-      localStorage.setItem('myRaps', JSON.stringify(raps));
-    }
-    callback();
+  function updateRap(raps) {
+    var deferred = $q.defer();
+    $indexedDB.openStore('raps', function(store) {
+      store.upsert(raps).then(function() {
+        deferred.resolve();
+      }, function(e) {
+        deferred.reject(e);
+      });
+    });
+    return deferred.promise;
   }
 
-  function saveRap(rap, callback) {
-    saveObject('myRaps', rap, callback);
+  function saveRap(rap) {
+    var deferred = $q.defer();
+    $indexedDB.openStore('raps', function(store) {
+      rap._id = randomString(32);
+      store.insert(rap).then(function() {
+        deferred.resolve();
+      }, function(e) {
+        deferred.reject(e);
+      });
+    });
+    return deferred.promise;
   }
 
-  function deleteRap(rap, callback) {
-    deleteObject('myRaps', rap);
-    callback();
+  function deleteRap(rap) {
+    var deferred = $q.defer();
+    $indexedDB.openStore('raps', function(store) {
+      store.delete(rap._id).then(function() {
+        deferred.resolve();
+      }, function(e) {
+        deferred.reject(e);
+      });
+    });
+    return deferred.promise;
   }
 
   return {
     getAll: getList,
     save: saveRap,
     'delete': deleteRap,
-    update: updateList
+    update: updateRap
   };
 });

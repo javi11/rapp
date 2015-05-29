@@ -96,14 +96,23 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
   $indexedDBProvider
     .connection('myIndexedDB')
     .upgradeDatabase(1, function(event, db) {
-      var objStore = db.createObjectStore('bases', {
+      var Bases = db.createObjectStore('bases', {
         keyPath: '_id'
       });
-      objStore.createIndex('id_idx', 'id', {
+      Bases.createIndex('id_idx', 'id', {
         unique: true
       });
-      objStore.createIndex('title_idx', 'title', {
+      Bases.createIndex('title_idx', 'title', {
         unique: false
+      });
+      var Raps = db.createObjectStore('raps', {
+        keyPath: '_id'
+      });
+      Raps.createIndex('_id_idx', '_id', {
+        unique: true
+      });
+      Raps.createIndex('name_idx', 'name', {
+        unique: true
       });
     });
 });

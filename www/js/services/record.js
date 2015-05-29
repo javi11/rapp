@@ -5,7 +5,7 @@
  * Record service
  * @module record
  */
-services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList) {
+services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList, $q) {
 
   var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
   var mediaRec = null;
@@ -64,17 +64,19 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    * @method save
    */
 
-  function save(data, done) {
+  function save(data) {
+    var deferred = $q.defer();
     data.path = APPDIR + '/rap';
-    RapList.save(data, function(err) {
-      if (err) {
-        return done(err);
-      }
+    data.creationDate = new Date();
+    RapList.save(data).then(function() {
       $cordovaFile.moveFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', data.name + '.mp3')
         .then(function() {
-          done();
+          deferred.resolve();
         }, fail);
+    }, function(error){
+      deferred.reject(error);
     });
+    return deferred.promise;
   }
 
   return {
