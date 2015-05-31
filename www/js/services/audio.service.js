@@ -2,7 +2,6 @@
 'use strict';
 
 services.service('AudioSvc', [function() {
-
   var AudioSvc = {
     myMedia: null,
     mediaTimer: null,
@@ -10,17 +9,12 @@ services.service('AudioSvc', [function() {
       var self = this;
 
       function onSuccess() {
-        console.log('playAudio():Audio Success');
+        //console.log('playAudio():Audio Success');
       }
 
-      // onError Callback
-      //
-      function onError() {
-          //console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-
-          // we forcefully stop
-        }
-        // stop playing, if playing
+      function onError(error) {
+        console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+      }
       self.stopAudio();
       self.myMedia = new Media(src, onSuccess, onError);
     },

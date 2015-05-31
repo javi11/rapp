@@ -3,9 +3,16 @@
 
 app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList, $ionicModal, APPDIR, AudioSvc, $cordovaFile, $ionicPopup) {
 
+  var alertPopup = $ionicPopup.alert({
+    title: 'Alerta!',
+    template: 'Se produjo un error al intentar realizar esta acción.'
+  });
+
   function fail(err) {
-    console.log('Error');
-    console.log(JSON.stringify(err));
+    alertPopup.then(function() {
+      console.log('Error');
+      console.log(JSON.stringify(err));
+    });
   }
 
   function getRapList() {
@@ -95,13 +102,11 @@ app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList,
     });
     confirmPopup.then(function(res) {
       if (res) {
-        $ionicPlatform.ready(function() {
-          $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
-            RapList.delete(item).then(function() {
-              $scope.raps.splice($scope.raps.indexOf(item), 1);
-            }, fail);
+        $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
+          RapList.delete(item).then(function() {
+            $scope.raps.splice($scope.raps.indexOf(item), 1);
           }, fail);
-        });
+        }, fail);
       }
     });
   };

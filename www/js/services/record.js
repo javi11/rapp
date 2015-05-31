@@ -7,7 +7,7 @@
  */
 services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapList, $q) {
 
-  var recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
+  var recordName = 'rap-temp-' + randomString(5) + '.mp3';
   var mediaRec = null;
 
   /**
@@ -17,7 +17,7 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    */
 
   function startRecord() {
-    recordName = 'rap-temp-' + randomString(5, 'A') + '.mp3';
+    recordName = 'rap-temp-' + randomString(5) + '.mp3';
     mediaRec = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + APPDIR + '/tmp/' + recordName);
     mediaRec = mediaRec.media;
     mediaRec.startRecord();
@@ -50,7 +50,6 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    * @method Fail
    */
   function fail(err) {
-    console.log('Error');
     console.log(JSON.stringify(err));
   }
 

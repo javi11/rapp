@@ -39,9 +39,15 @@ services
             });
 
           baseDir
-            .then(downloadBase)
-            .then(downloadCover)
-            .then(addToDB)
+            .then(downloadBase, function(error) {
+              deferred.resolve(error);
+            })
+            .then(downloadCover, function(error) {
+              deferred.resolve(error);
+            })
+            .then(addToDB, function(error) {
+              deferred.resolve(error);
+            })
             .then(function(e) {
               deferred.resolve(e);
             }, function(error) {
@@ -50,13 +56,11 @@ services
         });
         return deferred.promise;
       },
-      getDownloadedBases: function() {
+      getBases: function() {
         var deferred = $q.defer();
         $indexedDB.openStore('bases', function(store) {
           store.getAll().then(function(bases) {
-            deferred.resolve({
-              bases: bases
-            });
+            deferred.resolve(bases);
           }, function(error) {
             deferred.resolve(error);
           });

@@ -6,60 +6,56 @@
  * @module RapList
  */
 services.factory('RapList', function($indexedDB, $q) {
-
-  function getList() {
-    var deferred = $q.defer();
-    $indexedDB.openStore('raps', function(store) {
-      store.getAll().then(function(bases) {
-        deferred.resolve(bases);
-      }, function(e) {
-        deferred.reject(e);
+  var RapList = {
+    getAll: function() {
+      var deferred = $q.defer();
+      $indexedDB.openStore('raps', function(store) {
+        store.getAll().then(function(bases) {
+          deferred.resolve(bases);
+        }, function(e) {
+          deferred.reject(e);
+        });
       });
-    });
-    return deferred.promise;
-  }
+      return deferred.promise;
+    },
 
-  function updateRap(raps) {
-    var deferred = $q.defer();
-    $indexedDB.openStore('raps', function(store) {
-      store.upsert(raps).then(function() {
-        deferred.resolve();
-      }, function(e) {
-        deferred.reject(e);
+    update: function(raps) {
+      var deferred = $q.defer();
+      $indexedDB.openStore('raps', function(store) {
+        store.upsert(raps).then(function() {
+          deferred.resolve();
+        }, function(e) {
+          deferred.reject(e);
+        });
       });
-    });
-    return deferred.promise;
-  }
+      return deferred.promise;
+    },
 
-  function saveRap(rap) {
-    var deferred = $q.defer();
-    $indexedDB.openStore('raps', function(store) {
-      rap._id = randomString(32);
-      store.insert(rap).then(function() {
-        deferred.resolve();
-      }, function(e) {
-        deferred.reject(e);
+    save: function(rap) {
+      var deferred = $q.defer();
+      $indexedDB.openStore('raps', function(store) {
+        rap._id = randomString(32);
+        store.insert(rap).then(function() {
+          deferred.resolve();
+        }, function(e) {
+          deferred.reject(e);
+        });
       });
-    });
-    return deferred.promise;
-  }
+      return deferred.promise;
+    },
 
-  function deleteRap(rap) {
-    var deferred = $q.defer();
-    $indexedDB.openStore('raps', function(store) {
-      store.delete(rap._id).then(function() {
-        deferred.resolve();
-      }, function(e) {
-        deferred.reject(e);
+    delete: function(rap) {
+      var deferred = $q.defer();
+      $indexedDB.openStore('raps', function(store) {
+        store.delete(rap._id).then(function() {
+          deferred.resolve();
+        }, function(e) {
+          deferred.reject(e);
+        });
       });
-    });
-    return deferred.promise;
-  }
-
-  return {
-    getAll: getList,
-    save: saveRap,
-    'delete': deleteRap,
-    update: updateRap
+      return deferred.promise;
+    }
   };
+
+  return RapList;
 });

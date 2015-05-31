@@ -113,49 +113,9 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     $ionicLoading.show({
       template: 'Cargando.'
     });
-    console.log('SAVE RECORD');
     $record.save($scope.record).then(OnSaved, OnSaved);
   };
-  $ionicPlatform.ready(function() {
-    $ionicLoading.show({
-      template: 'Cargando.'
-    });
-    BaseList.call.get().$promise.then(function(bases) {
-      $scope.bases = bases;
-      BaseList.getDownloadedBases().then(function(downloadedBases) {
-        var basesId = downloadedBases.bases.map(function(downloaded) {
-          return downloaded.id;
-        });
-        $scope.bases.map(function(base) {
-          if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
-            base.downloaded = true;
-          }
-          return base;
-        });
-        $ionicLoading.hide();
-      }, function() {
-        $ionicLoading.hide();
-      });
-    });
-    if ($stateParams.id) {
-      if (!localStorage.notFirstTime) {
-        var alertPopup = $ionicPopup.alert({
-          title: 'Alerta!',
-          template: 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.'
-        });
-        alertPopup.then(function() {
-          localStorage.setItem('notFirstTime', true);
-        });
-      }
-      BaseList.getBase($stateParams.id).then(function(base) {
-        console.log(JSON.stringify(base));
-        $scope.base = base[0];
-        $ionicPlatform.ready(function() {
-          AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
-        });
-      });
-    }
-  });
+
   $scope.goToBase = function(base) {
     if (base.downloaded) {
       $location.path('/app/bases/' + base.id);
@@ -163,7 +123,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
       var confirmPopup = $ionicPopup.confirm({
         title: base.title,
         template: 'No tienes esta base descargada, ¿Qiueres descargarla?',
-        buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
+        buttons: [{
           text: 'En otro momento',
           type: 'button-default',
           onTap: function() {
@@ -216,4 +176,44 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     AudioSvc.stopAudio();
     $scope.playBaseBtn = true;
   };
+
+  $ionicPlatform.ready(function() {
+    $ionicLoading.show({
+      template: 'Cargando.'
+    });
+    if ($stateParams.id) {
+      if (!localStorage.notFirstTime) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'Alerta!',
+          template: 'Si tiene los auriculares conectados, por favor desconectelos para añadir la base.'
+        });
+        alertPopup.then(function() {
+          localStorage.setItem('notFirstTime', true);
+        });
+      }
+      BaseList.getBase($stateParams.id).then(function(base) {
+        $scope.base = base[0];
+        AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+        $ionicLoading.hide();
+      });
+    } else {
+      BaseList.call.get().$promise.then(function(bases) {
+        $scope.bases = bases;
+        BaseList.getBases().then(function(downloadedBases) {
+          var basesId = downloadedBases.map(function(downloaded) {
+            return downloaded.id;
+          });
+          $scope.bases.map(function(base) {
+            if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
+              base.downloaded = true;
+            }
+            return base;
+          });
+          $ionicLoading.hide();
+        }, function() {
+          $ionicLoading.hide();
+        });
+      });
+    }
+  });
 });

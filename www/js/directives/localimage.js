@@ -10,7 +10,9 @@ app.directive('localImage', function($cordovaFile, $ionicPlatform) {
           // success
           element[0].src = success;
         }, function(error) {
-          console.log(error);
+          if (error.code !== 1 && error.code !== 0) {
+            console.log(JSON.stringify(error));
+          }
         });
       });
     });
