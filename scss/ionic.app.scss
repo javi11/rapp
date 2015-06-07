@@ -14,7 +14,7 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-
+$balanced:              #4A6C54 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
@@ -43,38 +43,27 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .icon-icono-binilo:before {
-  content: "\e600";
-}
-
-.icon-Icono-caset-2:before {
   content: "\e601";
 }
 
-.background {
-  background: url('../img/background.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.icon-Icono-caset-2:before {
+  content: "\e600";
 }
 
-.list .item {
-  background-color: inherit;
+.background {
+  background: url('../img/background.png') repeat rgb(154, 179, 154);
+}
+
+.basesType .list .item {
+  background-color: rgba(0,0,0,0.5);
   border-color: #315E00;
+  color: whitesmoke;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 50px;
+  margin: 10px
 }
 
 .list .activated {
   background-color: rgba(0, 0, 0, 0.3);
-}
-
-.bar.bar-stable {
-  border-color: #315E00;
-  background-color: #28a54c;
-  color: #000;
-}
-
-.bar-stable .button.button-clear,
-.bar-stable .button,
-.bar.bar-stable .title {
-  color: #000;
 }
