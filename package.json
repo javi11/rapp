@@ -22,7 +22,11 @@
     "cordova-plugin-file",
     "cordova-plugin-file-transfer",
     "com.ionic.keyboard",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    {
+      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "id": "com.phonegap.plugins.PushPlugin"
+    }
   ],
   "cordovaPlatforms": [
     "android"

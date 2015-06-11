@@ -1,5 +1,8 @@
 {
   "name": "Rapp",
-  "app_id": "",
-  "gulpStartupTasks": ["sass", "watch"]
+  "app_id": "25b5753c",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ]
 }

@@ -41,7 +41,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $indexedDBProvider) {
+.config(function($stateProvider, $urlRouterProvider, $indexedDBProvider, $ionicAppProvider) {
   $stateProvider
     .state('app', {
       url: '/app',
@@ -115,4 +115,12 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
         unique: true
       });
     });
+  $ionicAppProvider.identify({
+    // The App ID for the server
+    'app_id': '25b5753c',
+    // The API key all services will use for this app
+    'api_key': 'b54e52509d43b0913638c9eae45c7aaa0e78408fa175e26'
+      // Your GCM sender ID/project number (Uncomment if using GCM)
+      //gcm_id: 'YOUR_GCM_ID'
+  });
 });
