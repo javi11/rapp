@@ -14,7 +14,8 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$balanced:              #4A6C54 !default;
+
+$balanced: #4A6C54 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
@@ -42,12 +43,28 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-icono-binilo:before {
+.icon-nota:before {
   content: "\e601";
 }
 
-.icon-Icono-caset-2:before {
+.icon-caset:before {
   content: "\e600";
+}
+
+.icon-batalla:before {
+    content: "\e602";
+}
+
+.icon-palabras:before {
+    content: "\e603";
+}
+
+.icon-raps:before {
+    content: "\e604";
+}
+
+.icon-solo:before {
+    content: "\e605";
 }
 
 .background {
@@ -55,7 +72,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .basesType .list .item {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   border-color: #315E00;
   color: whitesmoke;
   -webkit-border-radius: 100px;
@@ -66,4 +83,41 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .list .activated {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.gallery {
+  padding: .5vw;
+  font-size: 0;
+  display: -ms-flexbox;
+  -ms-flex-wrap: wrap;
+  -ms-flex-direction: column;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  display: -webkit-box;
+  display: flex;
+}
+
+.gallery div {
+  -webkit-box-flex: auto;
+  -ms-flex: auto;
+  flex: auto;
+  width: 120px;
+  margin: .5vw;
+}
+
+.gallery div .box {
+  width: 120px;
+  height: 120px;
+  margin: 10px auto;
+  background-color: red;
+  display: block;
+}
+
+@media screen and (max-width: 400px) {
+  .gallery div {
+    margin: 0;
+  }
+  .gallery {
+    padding: 0;
+  }
 }

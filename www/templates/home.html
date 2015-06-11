@@ -1,15 +1,13 @@
 <ion-view title="Rapp">
-  <ion-content>
-    <div class="list list-inset">
-      <ion-item href="#/app/bases">
-        Practica solo
-      </ion-item>
-      <ion-item href="#/">
-        Batalla
-      </ion-item>
-      <ion-item href="#/app/raps">
-        Rap`s
-      </ion-item>
+  <ion-content class="background">
+    <div class="gallery">
+      <div ng-repeat="item in menu">
+        <div class="box" >
+            <a ng-href="{{item.href}}">{{item.name}}
+            <i ng-class="icon {{item.icon}}"></i>
+            </a>
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-view>
