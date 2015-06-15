@@ -5,18 +5,18 @@ app.controller('AppCtrl', function($scope) {
   $scope.menu = [{
     name: 'Practica Solo',
     href: '#/app/bases',
-    icon: 'icon-solo'
+    background: 'alone'
   }, {
     name: 'Batalla',
     href: '#/',
-    icon: 'icon-batalla'
+    background: 'battle'
   }, {
     name: 'Palabras',
     href: '#/',
-    icon: 'icon-palabras'
+    background: 'words'
   }, {
     name: 'Rap\'s',
     href: '#/app/raps',
-    icon: 'icon-raps'
+    background: 'raps'
   }];
 });

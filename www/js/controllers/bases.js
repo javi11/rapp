@@ -131,7 +131,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
           }
         }, {
           text: 'Descargar',
-          type: 'button-positive',
+          type: 'button-dark',
           onTap: function() {
             return true;
           }

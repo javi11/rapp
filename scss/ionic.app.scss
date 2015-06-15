@@ -51,22 +51,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   content: "\e600";
 }
 
-.icon-batalla:before {
-    content: "\e602";
-}
-
-.icon-palabras:before {
-    content: "\e603";
-}
-
-.icon-raps:before {
-    content: "\e604";
-}
-
-.icon-solo:before {
-    content: "\e605";
-}
-
 .background {
   background: url('../img/background.png') repeat rgb(154, 179, 154);
 }
@@ -81,8 +65,37 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin: 10px
 }
 
-.list .activated {
-  background-color: rgba(0, 0, 0, 0.3);
+.basesType .list .item.activated,
+.menuType .list .item-content.activated {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.menuType {
+  background-color: #373737;
+}
+
+.menuType .list .item-content {
+  background-color: #373737;
+  border-color: #315E00;
+  color: whitesmoke;
+}
+
+.menuType .list .item {
+  border-color: #3A3A3A;
+}
+
+.popup-container .popup {
+  background-color: $balanced;
+  background-size: 14px 14px;
+  background-image: -webkit-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: -moz-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: -o-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: repeating-linear-gradient(-45deg, rgb(80, 157, 93), black 1px, transparent 1px, transparent 5px);
+  border: 2px solid #151515;
+  color: whitesmoke;
+  h3 {
+    color: whitesmoke;
+  }
 }
 
 .gallery {
@@ -105,12 +118,52 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin: .5vw;
 }
 
-.gallery div .box {
-  width: 120px;
-  height: 120px;
-  margin: 10px auto;
-  background-color: red;
-  display: block;
+.defaulBg {
+  background-color: #4a6c54;
+  color: #FFF;
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.gallery div {
+  .box {
+    width: 120px;
+    height: 120px;
+    margin: 10px auto;
+    display: block;
+    border: 1px solid #000000;
+    a {
+      display: block;
+      font-size: 24px;
+      text-align: center;
+      padding-top: 10px;
+      color: white;
+      text-decoration: none;
+      height: 100%;
+    }
+    a.activated {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+  .box.battle {
+    background: url(../img/home/battle.svg) rgb(206, 115, 216);
+    background-size: 120px 120px;
+    background-position-y: 17px;
+  }
+  .box.words {
+    background: url(../img/home/words.svg) rgb(97, 142, 223);
+    background-size: 120px 120px;
+  }
+  .box.raps {
+    background: url(../img/home/raps.svg) rgb(244, 93, 93);
+    background-size: 120px 120px;
+  }
+  .box.alone {
+    background: url(../img/home/alone.svg) #D8CE60;
+    background-size: 120px 120px;
+  }
 }
 
 @media screen and (max-width: 400px) {

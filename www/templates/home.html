@@ -2,9 +2,8 @@
   <ion-content class="background">
     <div class="gallery">
       <div ng-repeat="item in menu">
-        <div class="box" >
+        <div class="box" ng-class="item.background" >
             <a ng-href="{{item.href}}">{{item.name}}
-            <i ng-class="icon {{item.icon}}"></i>
             </a>
         </div>
       </div>

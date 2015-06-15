@@ -3,12 +3,11 @@
 
 app.controller('RapsCtrl', function($ionicPlatform, $scope, $rootScope, RapList, $ionicModal, APPDIR, AudioSvc, $cordovaFile, $ionicPopup) {
 
-  var alertPopup = $ionicPopup.alert({
-    title: 'Alerta!',
-    template: 'Se produjo un error al intentar realizar esta acción.'
-  });
-
   function fail(err) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Alerta!',
+      template: 'Se produjo un error al intentar realizar esta acción.'
+    });
     alertPopup.then(function() {
       console.log('Error');
       console.log(JSON.stringify(err));
