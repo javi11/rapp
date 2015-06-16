@@ -80,6 +80,16 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
     }
   })
 
+  .state('app.settings', {
+    url: '/settings',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
+      }
+    }
+  })
+
   .state('app.base', {
     url: '/bases/:id',
     views: {
@@ -112,6 +122,15 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
         unique: true
       });
       Raps.createIndex('name_idx', 'name', {
+        unique: true
+      });
+      var Settings = db.createObjectStore('settings', {
+        keyPath: '_id'
+      });
+      Settings.createIndex('_id_idx', '_id', {
+        unique: true
+      });
+      Settings.createIndex('name_idx', 'name', {
         unique: true
       });
     });

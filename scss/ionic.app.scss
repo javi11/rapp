@@ -28,6 +28,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-style: normal;
 }
 
+$boxSize: 150px !default;
 [class^="icon-"],
 [class*=" icon-"] {
   font-family: 'icomoon';
@@ -114,7 +115,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   -webkit-box-flex: auto;
   -ms-flex: auto;
   flex: auto;
-  width: 120px;
+  width: 160px;
   margin: .5vw;
 }
 
@@ -129,8 +130,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .gallery div {
   .box {
-    width: 120px;
-    height: 120px;
+    width: $boxSize;
+    height: $boxSize;
     margin: 10px auto;
     display: block;
     border: 1px solid #000000;
@@ -149,20 +150,21 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
   .box.battle {
     background: url(../img/home/battle.svg) rgb(206, 115, 216);
-    background-size: 120px 120px;
-    background-position-y: 17px;
+    background-size: $boxSize $boxSize;
+    background-position-y: 20px;
+    background-position-x: -1px;
   }
   .box.words {
     background: url(../img/home/words.svg) rgb(97, 142, 223);
-    background-size: 120px 120px;
+    background-size: $boxSize $boxSize;
   }
   .box.raps {
     background: url(../img/home/raps.svg) rgb(244, 93, 93);
-    background-size: 120px 120px;
+    background-size: $boxSize $boxSize;
   }
   .box.alone {
     background: url(../img/home/alone.svg) #D8CE60;
-    background-size: 120px 120px;
+    background-size: $boxSize $boxSize;
   }
 }
 

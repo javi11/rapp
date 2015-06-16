@@ -22,6 +22,16 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     $scope.modal = modal;
   });
 
+  function noNetwork() {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Alerta!',
+      template: 'Por favor, conectese a internet para obtener la lista más actualizada de bases o para descargar bases.'
+    });
+    alertPopup.then(function() {
+      $location.path('#/app');
+    });
+  }
+
   $rootScope.player = function() {
     $scope.modal.show();
     $ionicPlatform.ready(function() {
@@ -142,7 +152,12 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
           $ionicLoading.show({
             template: 'Descargando base.'
           });
-          BaseList.download(base).then(function() {
+          BaseList.download(base).then(function(res) {
+            if(!res.status) {
+              noNetwork();
+              $ionicLoading.hide();
+              return;
+            }
             var index = $scope.bases.indexOf(base);
             $scope.bases[index].downloaded = true;
             $ionicLoading.hide();
@@ -197,22 +212,35 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
         $ionicLoading.hide();
       });
     } else {
-      BaseList.call.get().$promise.then(function(bases) {
-        $scope.bases = bases;
-        BaseList.getBases().then(function(downloadedBases) {
-          var basesId = downloadedBases.map(function(downloaded) {
-            return downloaded.id;
-          });
-          $scope.bases.map(function(base) {
-            if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
+      BaseList.sync().then(function(bases) {
+        if (!bases.sync && bases.data.length > 0) {
+            $scope.bases = bases.data;
+            $scope.bases.map(function(base) {
               base.downloaded = true;
-            }
-            return base;
+              return base;
+            });
+            $ionicLoading.hide();
+        } else if (bases.data.length > 0) {
+          $scope.bases = bases.data;
+          BaseList.getBases().then(function(downloadedBases) {
+            var basesId = downloadedBases.map(function(downloaded) {
+              return downloaded.id;
+            });
+            $scope.bases.map(function(base) {
+              if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
+                base.downloaded = true;
+              }
+              return base;
+            });
+            $ionicLoading.hide();
+          }, function() {
+            noNetwork();
+            $ionicLoading.hide();
           });
+        } else {
+          noNetwork();
           $ionicLoading.hide();
-        }, function() {
-          $ionicLoading.hide();
-        });
+        }
       });
     }
   });
