@@ -1,12 +1,14 @@
 <ion-view title="Rapp">
-  <ion-content class="background">
-    <div class="gallery">
-      <div ng-repeat="item in menu">
-        <div class="box" ng-class="item.background" >
-            <a ng-href="{{item.href}}">{{item.name}}
-            </a>
-        </div>
-      </div>
-    </div>
+  <ion-content>
+    <ion-slide-box auto-play="false" does-continue="true" class="gallery">
+      <ion-slide ng-repeat="item in menu" class="box">
+        <video autoplay ng-poster="{{item.background}}" class="bgvid" loop>
+          <source ng-src="{{item.mp4}}">
+        </video>
+        <h1>
+          <a ng-href="{{item.href}}">{{item.name}}</a>
+        </h1>
+      </ion-slide>
+    </ion-slide-box>
   </ion-content>
 </ion-view>

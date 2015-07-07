@@ -28,7 +28,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-style: normal;
 }
 
-$boxSize: 150px !default;
 [class^="icon-"],
 [class*=" icon-"] {
   font-family: 'icomoon';
@@ -99,26 +98,6 @@ $boxSize: 150px !default;
   }
 }
 
-.gallery {
-  padding: .5vw;
-  font-size: 0;
-  display: -ms-flexbox;
-  -ms-flex-wrap: wrap;
-  -ms-flex-direction: column;
-  -webkit-flex-flow: row wrap;
-  flex-flow: row wrap;
-  display: -webkit-box;
-  display: flex;
-}
-
-.gallery div {
-  -webkit-box-flex: auto;
-  -ms-flex: auto;
-  flex: auto;
-  width: 160px;
-  margin: .5vw;
-}
-
 .defaulBg {
   background-color: #4a6c54;
   color: #FFF;
@@ -130,11 +109,8 @@ $boxSize: 150px !default;
 
 .gallery div {
   .box {
-    width: $boxSize;
-    height: $boxSize;
-    margin: 10px auto;
-    display: block;
-    border: 1px solid #000000;
+    height: 100vh;
+    overflow: hidden;
     a {
       display: block;
       font-size: 24px;
@@ -148,31 +124,21 @@ $boxSize: 150px !default;
       background-color: rgba(0, 0, 0, 0.3);
     }
   }
-  .box.battle {
-    background: url(../img/home/battle.svg) rgb(206, 115, 216);
-    background-size: $boxSize $boxSize;
-    background-position-y: 20px;
-    background-position-x: -1px;
-  }
-  .box.words {
-    background: url(../img/home/words.svg) rgb(97, 142, 223);
-    background-size: $boxSize $boxSize;
-  }
-  .box.raps {
-    background: url(../img/home/raps.svg) rgb(244, 93, 93);
-    background-size: $boxSize $boxSize;
-  }
-  .box.alone {
-    background: url(../img/home/alone.svg) #D8CE60;
-    background-size: $boxSize $boxSize;
-  }
 }
 
-@media screen and (max-width: 400px) {
-  .gallery div {
-    margin: 0;
-  }
-  .gallery {
-    padding: 0;
-  }
+.gallery video {
+  position: fixed;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  transform: translateX(-50%) translateY(-50%);
+  background: url('../img/alone.jpg') no-repeat;
+  background-size: cover;
+  transition: 1s opacity;
+  image-fit: fill;
 }
