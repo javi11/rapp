@@ -1,8 +1,8 @@
 <ion-view title="Rapp">
   <ion-content>
-    <ion-slide-box auto-play="false" does-continue="true" class="gallery">
+    <ion-slide-box auto-play="false" does-continue="false" class="gallery">
       <ion-slide ng-repeat="item in menu" class="box">
-        <video autoplay ng-poster="{{item.background}}" class="bgvid" loop>
+        <video autoplay ng-poster="{{item.background}}" class="bgvid" ng-class="{item.background}" loop>
           <source ng-src="{{item.mp4}}">
         </video>
         <h1>

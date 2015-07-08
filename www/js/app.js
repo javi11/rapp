@@ -50,14 +50,10 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       controller: 'AppCtrl'
     })
 
-  .state('app.home', {
+  .state('home', {
     url: '/home',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/home.html',
-        controller: 'AppCtrl'
-      }
-    }
+    templateUrl: 'templates/home.html',
+    controller: 'AppCtrl'
   })
 
   .state('app.bases', {
@@ -100,7 +96,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home');
+  $urlRouterProvider.otherwise('/home');
 
   //Create database
   $indexedDBProvider

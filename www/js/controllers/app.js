@@ -12,15 +12,5 @@ app.controller('AppCtrl', function($scope) {
     href: '#/',
     background: 'img/battle.jpg',
     mp4: 'img/battle.mp4'
-  }, {
-    name: 'Palabras',
-    href: '#/',
-    background: 'img/words.jpg',
-    mp4: 'img/words.mp4'
-  }, {
-    name: 'Rap\'s',
-    href: '#/app/raps',
-    background: 'img/raps.jpg',
-    mp4: 'img/raps.mp4'
   }];
 });
