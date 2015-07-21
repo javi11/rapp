@@ -5,12 +5,12 @@ app.controller('AppCtrl', function($scope) {
   $scope.menu = [{
     name: 'Practica Solo',
     href: '#/app/bases',
-    background: 'img/alone.jpg',
-    mp4: 'img/alone.mp4'
+    description: 'Entrena antes de la battalla, para ponerte a punto.',
+    background: 'alone'
   }, {
     name: 'Batalla',
     href: '#/',
-    background: 'img/battle.jpg',
-    mp4: 'img/battle.mp4'
+    description: 'Entra en el ring y demuestra tus habilidades a todo el mundo.',
+    background: 'battle'
   }];
 });

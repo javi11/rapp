@@ -38,7 +38,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   text-transform: none;
   line-height: 1;
   /* Better Font Rendering =========== */
-  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -108,52 +107,32 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .gallery div {
+  .box-dark {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
   .box {
     height: 100vh;
     overflow: hidden;
-    a {
-      display: block;
-      font-size: 24px;
-      text-align: center;
-      color: white;
-      text-decoration: none;
-      height: 100%;
-    }
-    a.activated {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-    h1 {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      width: 75%;
-      margin: 0 auto;
-      border-radius: 10px;
-      margin-top: 50%;
+    text-align: center;
+    color: #FFF;
+    span {
+      font-family: sans-serif;
+      font-size: 200%;
+      font-style: normal;
+      letter-spacing: 2px;
     }
   }
-}
-
-.gallery video {
-  position: fixed;
-  overflow: hidden;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -100;
-  transform: translateX(-50%) translateY(-50%);
-  background-size: cover;
-  transition: 1s opacity;
-  image-fit: fill;
 }
 
 .gallery {
   .alone {
     background: url('../img/alone.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   .battle {
     background: url('../img/battle.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 }
