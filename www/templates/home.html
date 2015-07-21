@@ -1,5 +1,5 @@
 <ion-view title="Rapp">
-  <ion-content>
+  <ion-content scroll="false">
     <ion-slide-box auto-play="false" does-continue="false" class="gallery">
       <ion-slide ng-repeat="item in menu">
         <div class="box {{item.background}}">
@@ -8,7 +8,7 @@
             <div class="col col-center">
               <div class="{{item.background}}"></div>
               <span>{{item.description}}</span>
-              <a class="button button-block button-royal" ng-href="{{item.href}}">{{item.name}}</a>
+              <a class="button button-block button-balanced" ng-href="{{item.href}}">{{item.name}}</a>
             </div>
             <div class="col"></div>
           </div>
