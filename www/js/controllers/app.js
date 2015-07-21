@@ -5,7 +5,7 @@ app.controller('AppCtrl', function($scope) {
   $scope.menu = [{
     name: 'Practica Solo',
     href: '#/app/bases',
-    description: 'Entrena antes de la battalla, para ponerte a punto.',
+    description: 'Entrena antes de la batalla, para ponerte a punto.',
     background: 'alone'
   }, {
     name: 'Batalla',
