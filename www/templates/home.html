@@ -1,6 +1,10 @@
 <ion-view title="Rapp">
   <ion-content scroll="false">
-    <ion-slide-box auto-play="true" does-continue="true" class="gallery">
+    <div class="feedback">
+      <a href="#/" class="button button-icon icon ion-person button-calm"></a>
+      <a ng-click="openSettings()" class="button button-icon icon ion-gear-b button-calm"></a>
+    </div>
+    <ion-slide-box auto-play="true" does-continue="true" class="home">
       <ion-slide ng-repeat="item in menu">
         <div class="box {{item.background}}">
           <div class="row responsive-sm box box-dark">

@@ -1,7 +1,7 @@
 /* global app, cordova */
 'use strict';
 
-app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $ionicPopup, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, BaseList, APPDIR, AudioSvc) {
+app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $ionicPopup, $rootScope, $record, $location, $ionicLoading, $ionicModal, $stateParams, $q, BaseList, APPDIR, AudioSvc) {
   $scope.recording = false;
   $scope.APPDIR = APPDIR;
   $scope.record = {
@@ -126,49 +126,57 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
     $record.save($scope.record).then(OnSaved, OnSaved);
   };
 
-  $scope.goToBase = function(base) {
-    if (base.downloaded) {
-      $location.path('/app/bases/' + base.id);
-    } else {
-      var confirmPopup = $ionicPopup.confirm({
-        title: base.title,
-        template: 'No tienes esta base descargada, ¿Qiueres descargarla?',
-        buttons: [{
-          text: 'En otro momento',
-          type: 'button-default',
-          onTap: function() {
-            return false;
-          }
-        }, {
-          text: 'Descargar',
-          type: 'button-dark',
-          onTap: function() {
-            return true;
-          }
-        }]
-      });
-      confirmPopup.then(function(res) {
-        if (res) {
-          $ionicLoading.show({
-            template: 'Descargando base.'
-          });
-          BaseList.download(base).then(function(res) {
-            if(!res.status) {
-              noNetwork();
-              $ionicLoading.hide();
-              return;
-            }
-            var index = $scope.bases.indexOf(base);
-            $scope.bases[index].downloaded = true;
-            $ionicLoading.hide();
-          }, function() {
-            var index = $scope.bases.indexOf(base);
-            $scope.bases[index].downloaded = true;
-            $ionicLoading.hide();
-          });
+  function downloadBase(base) {
+    var confirmPopup = $ionicPopup.confirm({
+      title: base.title,
+      template: 'No tienes esta base descargada, ¿Qiueres descargarla?',
+      buttons: [{
+        text: 'En otro momento',
+        type: 'button-default',
+        onTap: function() {
+          return false;
         }
-      });
-    }
+      }, {
+        text: 'Descargar',
+        type: 'button-dark',
+        onTap: function() {
+          return true;
+        }
+      }]
+    });
+    confirmPopup.then(function(res) {
+      if (res) {
+        $ionicLoading.show({
+          template: 'Descargando base.'
+        });
+        BaseList.download(base).then(function(res) {
+          if (!res.status) {
+            noNetwork();
+            $ionicLoading.hide();
+            return;
+          }
+          var index = $scope.bases.indexOf(base);
+          $scope.bases[index].downloaded = true;
+          $ionicLoading.hide();
+        }, function() {
+          var index = $scope.bases.indexOf(base);
+          $scope.bases[index].downloaded = true;
+          $ionicLoading.hide();
+        });
+      }
+    });
+  }
+
+  $scope.goToBase = function(base) {
+    BaseList.downloaded(base).then(function(success) {
+      if (success) {
+        $location.path('/app/bases/' + base.$id);
+      } else {
+        downloadBase(base);
+      }
+    }, function() {
+      downloadBase(base);
+    });
   };
   $scope.playBase = function() {
     if ($stateParams.id) {
@@ -206,42 +214,32 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
           localStorage.setItem('notFirstTime', true);
         });
       }
-      BaseList.getBase($stateParams.id).then(function(base) {
-        $scope.base = base[0];
+      BaseList.get($stateParams.id).once('value', function(baseSnap) {
+        $scope.base = baseSnap.val();
         AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
         $ionicLoading.hide();
       });
     } else {
-      BaseList.sync().then(function(bases) {
-        if (!bases.sync && bases.data.length > 0) {
-            $scope.bases = bases.data;
-            $scope.bases.map(function(base) {
-              base.downloaded = true;
-              return base;
-            });
-            $ionicLoading.hide();
-        } else if (bases.data.length > 0) {
-          $scope.bases = bases.data;
-          BaseList.getBases().then(function(downloadedBases) {
-            var basesId = downloadedBases.map(function(downloaded) {
-              return downloaded.id;
-            });
-            $scope.bases.map(function(base) {
-              if (basesId.length > 0 && basesId.indexOf(base.id) > -1) {
-                base.downloaded = true;
-              }
-              return base;
-            });
-            $ionicLoading.hide();
-          }, function() {
-            noNetwork();
-            $ionicLoading.hide();
-          });
-        } else {
-          noNetwork();
-          $ionicLoading.hide();
-        }
-      });
+      $scope.bases = BaseList.getAll();
+      $scope.$watch('bases', function() {
+
+        //Check if bases are downloaded
+
+        var promises = [];
+        $scope.bases.forEach(function(base) {
+          promises.push(BaseList.downloaded(base));
+        });
+        $q.all(promises).then(function(results) {
+          for (var i = 0; i < results.length; i++) {
+            if (results[i]) {
+              $scope.bases[i].downloaded = true;
+            } else {
+              $scope.bases[i].downloaded = false;
+            }
+          }
+        });
+        $ionicLoading.hide();
+      }, true);
     }
   });
 });

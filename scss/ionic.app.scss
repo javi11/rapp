@@ -106,7 +106,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-.gallery div {
+.home div {
   .box-dark {
     background-color: rgba(0, 0, 0, 0.3);
   }
@@ -124,7 +124,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-.gallery {
+.home {
   .alone {
     background: url('../img/alone.jpg') no-repeat;
     background-position: center;
@@ -137,6 +137,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-.slider-pager .slider-pager-page {
+.home .slider-pager .slider-pager-page {
+  color: #FFF;
+}
+
+.feedback {
+  height: 60px;
+  width: 80px;
+  position: fixed;
+  top: 2%;
+  right: 2%;
+  z-index: 999;
   color: #FFF;
 }

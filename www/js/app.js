@@ -8,7 +8,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'starter.controllers', 'starter.services']);
+var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'starter.controllers', 'starter.services', 'starter.security']);
 
 /**
  * Module of services.
@@ -16,7 +16,7 @@ var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 
  */
 var services = angular.module('starter.services', []);
 
-app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
+app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -38,6 +38,9 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+  });
+  Auth.$onAuth(function(user) {
+    $rootScope.loggedIn = !!user;
   });
 })
 
@@ -72,16 +75,6 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR) {
       'menuContent': {
         templateUrl: 'templates/raps.html',
         controller: 'RapsCtrl'
-      }
-    }
-  })
-
-  .state('app.settings', {
-    url: '/settings',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/settings.html',
-        controller: 'SettingsCtrl'
       }
     }
   })

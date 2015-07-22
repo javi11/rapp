@@ -63,16 +63,16 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, RapLis
    * @method save
    */
 
-  function save(data) {
+  function save(user, data) {
     var deferred = $q.defer();
     data.path = APPDIR + '/rap';
     data.creationDate = new Date();
-    RapList.save(data).then(function() {
+    RapList.add(user, data).then(function() {
       $cordovaFile.moveFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', data.name + '.mp3')
         .then(function() {
           deferred.resolve();
         }, fail);
-    }, function(error){
+    }, function(error) {
       deferred.reject(error);
     });
     return deferred.promise;
