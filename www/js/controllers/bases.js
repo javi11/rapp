@@ -15,7 +15,7 @@ app.controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $
   $scope.playRecordBtn = false;
   $scope.playBaseBtn = true;
 
-  $ionicModal.fromTemplateUrl('templates/records/save.html', {
+  $ionicModal.fromTemplateUrl('templates/bases/save.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

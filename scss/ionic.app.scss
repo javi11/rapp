@@ -150,3 +150,40 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   z-index: 999;
   color: #FFF;
 }
+
+.login {
+  background-color: #1C2D1C;
+  p {
+    float: left;
+    color: #FFF;
+    a {
+      color: #FFF;
+      text-decoration: none;
+    }
+  }
+  .list-inset {
+    text-align: center;
+    background-color: inherit !important;
+    .item {
+      background-color: rgba(76, 89, 75, 0.9);
+      border-color: #000;
+    }
+    input {
+      color: #FFF;
+    }
+  }
+  .signup-or-separator {
+    position: relative;
+    height: 29px;
+    margin: 5px 0;
+    text-align: center;
+    background: none;
+    padding: 8px;
+  }
+  .signup-or-separator hr {
+    width: 100%;
+    margin: -16px auto 10px auto;
+    border-top: 1px solid #000;
+    border-bottom: 0;
+  }
+}

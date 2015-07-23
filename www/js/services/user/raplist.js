@@ -5,21 +5,21 @@
  * RapList service
  * @module RapList
  */
-services.factory('RapList', function(APIURL, $indexedDB, $q, $firebaseArray) {
+services.factory('RapList', function(FBURL, $indexedDB, $q, $firebaseArray) {
   var RapList = {
 
     getAll: function(user) {
-      var rapsRef = new Firebase(APIURL + '/raps/' + user.$id);
+      var rapsRef = new Firebase(FBURL + '/raps/' + user.$id);
       return $firebaseArray(rapsRef);
     },
 
     getPublic: function() {
-      var rapsRef = new Firebase(APIURL + '/raps');
+      var rapsRef = new Firebase(FBURL + '/raps');
       return $firebaseArray(rapsRef);
     },
 
     getRap: function(user, rap) {
-      var rapsRef = new Firebase(APIURL + '/raps/' + user.$id + '/' + rap.$id);
+      var rapsRef = new Firebase(FBURL + '/raps/' + user.$id + '/' + rap.$id);
       return rapsRef;
     },
 

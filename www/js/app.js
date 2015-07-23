@@ -8,7 +8,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'starter.controllers', 'starter.services', 'starter.security']);
+var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'starter.controllers', 'starter.services']);
 
 /**
  * Module of services.
@@ -16,7 +16,7 @@ var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 
  */
 var services = angular.module('starter.services', []);
 
-app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
+app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -39,23 +39,51 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
       StatusBar.styleDefault();
     }
   });
-  Auth.$onAuth(function(user) {
-    $rootScope.loggedIn = !!user;
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams,
+    fromState, fromParams, error) {
+    $state.go(error);
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $indexedDBProvider, $ionicAppProvider) {
+  var resolve = {
+    auth: function($q, $timeout, Auth, User) {
+      var defer = $q.defer();
+      var state = this;
+
+      Auth.getCurrentUser().then(function() {
+        User.loadCurrentUser().then(function() {
+          if (state.name === 'change-password') {
+            defer.resolve();
+          } else {
+            if (User.hasChangedPassword()) {
+              defer.resolve();
+            } else {
+              defer.reject('change-password');
+            }
+          }
+        });
+      }, function() {
+        $timeout(function() {
+          defer.reject('login');
+        }, 250);
+      });
+
+      return defer.promise;
+    }
+  };
+
   $stateProvider
     .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: 'templates/menu.html',
+      templateUrl: 'templates/home/menu.html',
       controller: 'AppCtrl'
     })
 
   .state('home', {
     url: '/home',
-    templateUrl: 'templates/home.html',
+    templateUrl: 'templates/home/home.html',
     controller: 'AppCtrl'
   })
 
@@ -63,7 +91,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
     url: '/bases',
     views: {
       'menuContent': {
-        templateUrl: 'templates/bases.html',
+        templateUrl: 'templates/bases/bases.html',
         controller: 'BasesCtrl'
       }
     }
@@ -73,8 +101,9 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
     url: '/raps',
     views: {
       'menuContent': {
-        templateUrl: 'templates/raps.html',
-        controller: 'RapsCtrl'
+        templateUrl: 'templates/user/raps.html',
+        controller: 'RapsCtrl',
+        resolve: resolve
       }
     }
   })
@@ -83,10 +112,35 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope) {
     url: '/bases/:id',
     views: {
       'menuContent': {
-        templateUrl: 'templates/editor.html',
+        templateUrl: 'templates/bases/editor.html',
         controller: 'BasesCtrl'
       }
     }
+  })
+  
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'templates/auth/signup.html',
+    controller: 'SignupCtrl'
+  })
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/auth/login.html',
+    controller: 'LoginCtrl'
+  })
+
+  .state('reset-password', {
+    url: '/reset-password',
+    templateUrl: 'templates/auth/reset-password.html',
+    controller: 'ResetPasswordCtrl'
+  })
+
+  .state('change-password', {
+    url: '/change-password',
+    templateUrl: 'templates/auth/change-password.html',
+    controller: 'ChangePasswordCtrl',
+    resolve: resolve
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');

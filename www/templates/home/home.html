@@ -1,7 +1,7 @@
 <ion-view title="Rapp">
   <ion-content scroll="false">
     <div class="feedback">
-      <a href="#/" class="button button-icon icon ion-person button-calm"></a>
+      <a href="#/login" class="button button-icon icon ion-person button-calm"></a>
       <a ng-click="openSettings()" class="button button-icon icon ion-gear-b button-calm"></a>
     </div>
     <ion-slide-box auto-play="true" does-continue="true" class="home">
@@ -9,7 +9,7 @@
         <div class="box {{item.background}}">
           <div class="row responsive-sm box box-dark">
             <div class="col"></div>
-            <div class="col col-center">
+            <div class="col col-center col-50">
               <div class="{{item.background}}"></div>
               <span>{{item.description}}</span>
               <a class="button button-block button-balanced" ng-href="{{item.href}}">{{item.name}}</a>

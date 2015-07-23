@@ -6,18 +6,18 @@
  * @module BaseList
  */
 services
-  .factory('BaseList', function(APIURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork) {
+  .factory('BaseList', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork) {
 
     var Bases = {
       downloaded: function(base) {
         return $cordovaFile.checkFile(cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/', base.title + '.mp3');
       },
       getAll: function() {
-        var basesRef = new Firebase(APIURL + '/bases');
+        var basesRef = new Firebase(FBURL + '/bases');
         return $firebaseArray(basesRef);
       },
       get: function(base) {
-        var basesRef = new Firebase(APIURL + '/bases/' + base);
+        var basesRef = new Firebase(FBURL + '/bases/' + base);
         return basesRef;
       },
       download: function(base) {
