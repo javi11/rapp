@@ -1,8 +1,8 @@
-/* global app */
+/* global controllers */
 
 'use strict';
 
-app
+controllers
   .controller('ChangePasswordCtrl',
     function($scope, $state, $ionicLoading, Auth, User) {
       var passwordStrengthRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
@@ -17,11 +17,11 @@ app
       $scope.isFirstPasswordChange = !User.hasChangedPassword();
 
       if ($scope.isFirstPasswordChange) {
-        $scope.passwordLabel = 'Temporary Password';
-        $scope.passwordPlaceholder = 'You\'ll find it in the email we sent you';
+        $scope.passwordLabel = 'Contraseña temporal';
+        $scope.passwordPlaceholder = 'La encontrarás en el email que te enviamos.';
       } else {
-        $scope.passwordLabel = 'Current Password';
-        $scope.passwordPlaceholder = 'Your current password';
+        $scope.passwordLabel = 'Contraseña actual';
+        $scope.passwordPlaceholder = 'Tu contraseña actual';
       }
 
       $scope.done = function() {
@@ -34,7 +34,7 @@ app
         $scope.errorMessage = null;
 
         $ionicLoading.show({
-          template: 'Please wait...'
+          template: 'Espere, por favor...'
         });
 
         Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword)
@@ -45,13 +45,13 @@ app
 
       function goToDashboard() {
         $ionicLoading.hide();
-        $state.go('app.dashboard');
+        $state.go('home');
       }
 
       function handleError(error) {
         switch (error.code) {
           case 'INVALID_PASSWORD':
-            $scope.errorMessage = 'Invalid password';
+            $scope.errorMessage = 'Contraseña incorrecta';
             break;
           default:
             $scope.errorMessage = 'Error: [' + error.code + ']';

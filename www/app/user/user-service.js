@@ -16,19 +16,16 @@ services
       };
 
       this.create = function(id, email) {
-        var users = $firebaseObject(usersRef);
-
-        return users.$child(id).$set({
-          email: email
-        });
+        var userRef = new Firebase(FBURL + '/users/' + id);
+        var user = $firebaseObject(userRef);
+        user.email = email;
+        return user.$save();
       };
 
       this.recordPasswordChange = function() {
         var now = Math.floor(Date.now() / 1000);
-
-        return currentUser.$update({
-          passwordLastChangedAt: now
-        });
+        currentUser.passwordLastChangedAt = now;
+        return currentUser.$save();
       };
 
       this.hasChangedPassword = function() {

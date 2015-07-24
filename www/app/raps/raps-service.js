@@ -5,7 +5,7 @@
  * RapList service
  * @module RapList
  */
-services.factory('RapList', function(FBURL, $indexedDB, $q, $firebaseArray) {
+services.factory('Raps', function(FBURL, $indexedDB, $q, $firebaseArray) {
   var RapList = {
 
     getAll: function(user) {

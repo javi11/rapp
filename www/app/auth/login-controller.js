@@ -1,8 +1,8 @@
-/* global app */
+/* global controllers */
 
 'use strict';
 
-app
+controllers
   .controller('LoginCtrl',
     function($scope, $state, $ionicLoading, Auth, User, $ionicPopup) {
       $scope.user = {

@@ -1,8 +1,8 @@
-/* global app */
+/* global controllers */
 
 'use strict';
 
-app
+controllers
   .controller('ResetPasswordCtrl',
     function($scope, $ionicLoading, Auth) {
       $scope.user = {

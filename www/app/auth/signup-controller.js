@@ -1,10 +1,10 @@
-/* global app */
+/* global controllers */
 
 'use strict';
 
-app
+controllers
   .controller('SignupCtrl',
-    function($scope, $q, $state, $ionicLoading, Auth, User, Signup) {
+    function($scope, $q, $state, $ionicLoading, Auth, User, Signup, $ionicPopup) {
       var password = Signup.randomPassword();
 
       $scope.user = {
@@ -16,7 +16,7 @@ app
         $scope.errorMessage = null;
 
         $ionicLoading.show({
-          template: 'Please wait...'
+          template: 'Espere, por favor...'
         });
 
         createAuthUser().then(sendPasswordResetEmail)
@@ -30,22 +30,21 @@ app
         return Auth.createUser($scope.user.email, password);
       }
 
-      function sendPasswordResetEmail(authUser) {
+      function sendPasswordResetEmail() {
         var defer = $q.defer();
-
-        Auth.sendPasswordResetEmail(authUser.email).then(function() {
-          defer.resolve(authUser);
+        Auth.sendPasswordResetEmail($scope.user.email).then(function() {
+          defer.resolve($scope.user.email);
         });
 
         return defer.promise;
       }
 
-      function login(authUser) {
-        return Auth.login(authUser.email, password);
+      function login(email) {
+        return Auth.login(email, password);
       }
 
       function createMyAppUser(authUser) {
-        return User.create(authUser.uid, authUser.email);
+        return User.create(authUser.uid, authUser.password.email);
       }
 
       function goToChangePassword() {
@@ -54,17 +53,25 @@ app
       }
 
       function handleError(error) {
+        var errorMessage;
         switch (error.code) {
           case 'INVALID_EMAIL':
-            $scope.errorMessage = 'Invalid email';
+            errorMessage = 'Email incorrecto.';
             break;
           case 'EMAIL_TAKEN':
-            $scope.errorMessage = 'Email already exists';
+            errorMessage = 'Este email ya existe.';
             break;
           default:
-            $scope.errorMessage = 'Error: [' + error.code + ']';
+            errorMessage = 'Error: [' + error.code + ']';
         }
 
         $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error!',
+          template: errorMessage
+        });
+        alertPopup.then(function() {
+          localStorage.setItem('notFirstTime', true);
+        });
       }
     });

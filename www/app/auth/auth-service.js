@@ -29,7 +29,10 @@ services
       this.createUser = function(email, password) {
         var defer = $q.defer();
 
-        firebaseAuth.$createUser(email, password).then(
+        firebaseAuth.$createUser({
+          email: email,
+          password: password
+        }).then(
           function(user) {
             self.currentUser = user;
             defer.resolve(user);
@@ -73,6 +76,10 @@ services
       };
 
       this.changePassword = function(oldPassword, newPassword) {
-        return firebaseAuth.$changePassword(this.currentUser.email, oldPassword, newPassword);
+        return firebaseAuth.$changePassword({
+          email: this.currentUser.password.email,
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        });
       };
     });

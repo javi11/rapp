@@ -1,20 +1,27 @@
 /*global cordova, StatusBar */
-/*exported services */
+/*exported services, controllers */
 
 'use strict';
-// Ionic Starter App
+// Ionic Rapp App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'rapp' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-var app = angular.module('starter', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'starter.controllers', 'starter.services']);
+var app = angular.module('rapp', ['ionic', 'firebase', 'ionic.service.core', 'ngCordova', 'ngResource', 'indexedDB', 'config', 'rapp.controllers', 'rapp.services']);
+
+/**
+ * Module of controllers.
+ * @property controllers
+ */
+
+var controllers = angular.module('rapp.controllers', []);
 
 /**
  * Module of services.
  * @property services
  */
-var services = angular.module('starter.services', []);
+
+var services = angular.module('rapp.services', []);
 
 app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state) {
   $ionicPlatform.ready(function() {
@@ -41,6 +48,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
   });
   $rootScope.$on('$stateChangeError', function(event, toState, toParams,
     fromState, fromParams, error) {
+    console.log(error);
     $state.go(error);
   });
 })
@@ -77,13 +85,13 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
     .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: 'templates/home/menu.html',
+      templateUrl: 'app/home/menu.html',
       controller: 'AppCtrl'
     })
 
   .state('home', {
     url: '/home',
-    templateUrl: 'templates/home/home.html',
+    templateUrl: 'app/home/home.html',
     controller: 'AppCtrl'
   })
 
@@ -91,7 +99,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
     url: '/bases',
     views: {
       'menuContent': {
-        templateUrl: 'templates/bases/bases.html',
+        templateUrl: 'app/bases/bases.html',
         controller: 'BasesCtrl'
       }
     }
@@ -101,7 +109,7 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
     url: '/raps',
     views: {
       'menuContent': {
-        templateUrl: 'templates/user/raps.html',
+        templateUrl: 'app/raps/raps.html',
         controller: 'RapsCtrl',
         resolve: resolve
       }
@@ -112,33 +120,33 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
     url: '/bases/:id',
     views: {
       'menuContent': {
-        templateUrl: 'templates/bases/editor.html',
+        templateUrl: 'app/bases/editor.html',
         controller: 'BasesCtrl'
       }
     }
   })
-  
+
   .state('signup', {
     url: '/signup',
-    templateUrl: 'templates/auth/signup.html',
+    templateUrl: 'app/auth/signup.html',
     controller: 'SignupCtrl'
   })
 
   .state('login', {
     url: '/login',
-    templateUrl: 'templates/auth/login.html',
+    templateUrl: 'app/auth/login.html',
     controller: 'LoginCtrl'
   })
 
   .state('reset-password', {
     url: '/reset-password',
-    templateUrl: 'templates/auth/reset-password.html',
+    templateUrl: 'app/auth/reset-password.html',
     controller: 'ResetPasswordCtrl'
   })
 
   .state('change-password', {
     url: '/change-password',
-    templateUrl: 'templates/auth/change-password.html',
+    templateUrl: 'app/auth/change-password.html',
     controller: 'ChangePasswordCtrl',
     resolve: resolve
   });

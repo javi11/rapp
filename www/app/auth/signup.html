@@ -1,0 +1,23 @@
+<ion-view>
+  <ion-content class="background login">
+    <div class="list list-inset">
+      <div class="item">
+        <img src="img/logo.png" style="width: 100px;" />
+      </div>
+      <label class="item item-input">
+        <i class="icon ion-email placeholder-icon"></i>
+        <input type="email" placeholder="Email" ng-model="user.email">
+      </label>
+      <div class="item">
+        <button class="button button-balanced button-block" ng-click="signup()">
+          Registrarse
+        </button>
+        <p>
+          <a ng-href="#/login">
+            Ya tengo una cuenta
+          </a>
+        </p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -6,7 +6,7 @@
  * @module BaseList
  */
 services
-  .factory('BaseList', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork) {
+  .factory('Bases', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork) {
 
     var Bases = {
       downloaded: function(base) {
