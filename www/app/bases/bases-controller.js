@@ -1,4 +1,4 @@
-/* global controllers, cordova */
+/* global controllers */
 'use strict';
 
 controllers
@@ -63,7 +63,7 @@ controllers
           }
         };
 
-        AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + '/tmp/' + $record.name());
+        AudioSvc.loadAudio($rootScope.appDir + APPDIR + '/tmp/' + $record.name());
         $scope.loaded = true;
         $scope.name = $record.name();
         $scope.path = $record.name();
@@ -72,7 +72,7 @@ controllers
 
     $rootScope.closeModal = function() {
       $scope.modal.hide();
-      AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+      AudioSvc.loadAudio($rootScope.appDir + APPDIR + $scope.base.path + $scope.base.song);
     };
 
     function OnSaved(err) {
@@ -116,7 +116,7 @@ controllers
       $scope.playRecordBtn = false;
       $scope.saveRecordBtn = false;
       $record.clearTmp(function() {
-        AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+        AudioSvc.loadAudio($rootScope.appDir + APPDIR + $scope.base.path + $scope.base.song);
       });
     });
 
@@ -217,7 +217,7 @@ controllers
         }
         Bases.get($stateParams.id).once('value', function(baseSnap) {
           $scope.base = baseSnap.val();
-          AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + $scope.base.path + $scope.base.song);
+          AudioSvc.loadAudio($rootScope.appDir + APPDIR + $scope.base.path + $scope.base.song);
           $ionicLoading.hide();
         });
       } else {

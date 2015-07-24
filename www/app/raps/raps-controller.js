@@ -1,4 +1,4 @@
-/* global controllers, cordova */
+/* global controllers */
 'use strict';
 
 controllers
@@ -64,7 +64,7 @@ controllers
             $scope.$apply();
           }
         };
-        AudioSvc.loadAudio(cordova.file.externalRootDirectory + APPDIR + '/rap/' + $scope.selected.name + '.mp3');
+        AudioSvc.loadAudio($rootScope.appDir + APPDIR + '/rap/' + $scope.selected.name + '.mp3');
         $scope.loaded = true;
         $scope.name = $scope.selected.name;
         $scope.path = $scope.selected.name;
@@ -106,7 +106,7 @@ controllers
       });
       confirmPopup.then(function(res) {
         if (res) {
-          $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/rap/', item.name + '.mp3').then(function() {
+          $cordovaFile.removeFile($rootScope.appDir + APPDIR + '/rap/', item.name + '.mp3').then(function() {
             Raps.delete($scope.raps, $index).then(function() {}, fail);
           }, fail);
         }

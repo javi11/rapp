@@ -5,7 +5,7 @@
  * Record service
  * @module record
  */
-services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, Raps, $q, Utils) {
+services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, Raps, $q, Utils, $rootScope) {
 
   var recordName = 'rap-temp-' + Utils.randomString(5) + '.mp3';
   var mediaRec = null;
@@ -18,7 +18,7 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, Raps, 
 
   function startRecord() {
     recordName = 'rap-temp-' + Utils.randomString(5) + '.mp3';
-    mediaRec = $cordovaMedia.newMedia(cordova.file.externalRootDirectory + APPDIR + '/tmp/' + recordName);
+    mediaRec = $cordovaMedia.newMedia($rootScope.appDir + APPDIR + '/tmp/' + recordName);
     mediaRec = mediaRec.media;
     mediaRec.startRecord();
   }
@@ -54,7 +54,7 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, Raps, 
   }
 
   function clearTmp(done) {
-    $cordovaFile.removeFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName).then(done, fail);
+    $cordovaFile.removeFile($rootScope.appDir + APPDIR + '/tmp/', recordName).then(done, fail);
   }
 
   /**
@@ -68,7 +68,7 @@ services.factory('$record', function($cordovaMedia, $cordovaFile, APPDIR, Raps, 
     data.path = APPDIR + '/rap';
     data.creationDate = new Date();
     Raps.add(user, data).then(function() {
-      $cordovaFile.moveFile(cordova.file.externalRootDirectory + APPDIR + '/tmp/', recordName, cordova.file.externalRootDirectory + '/' + APPDIR + '/rap', data.name + '.mp3')
+      $cordovaFile.moveFile($rootScope.appDir + APPDIR + '/tmp/', recordName, $rootScope.appDir + '/' + APPDIR + '/rap', data.name + '.mp3')
         .then(function() {
           deferred.resolve();
         }, fail);

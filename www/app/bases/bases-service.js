@@ -1,4 +1,4 @@
-/*global services, cordova, Firebase*/
+/*global services, Firebase*/
 
 'use strict';
 /**
@@ -6,11 +6,11 @@
  * @module BaseList
  */
 services
-  .factory('Bases', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork) {
+  .factory('Bases', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork, $rootScope) {
 
     var Bases = {
       downloaded: function(base) {
-        return $cordovaFile.checkFile(cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/', base.title + '.mp3');
+        return $cordovaFile.checkFile($rootScope.appDir || +APPDIR + '/bases/' + base.path + '/', base.title + '.mp3');
       },
       getAll: function() {
         var basesRef = new Firebase(FBURL + '/bases');
@@ -22,12 +22,12 @@ services
       },
       download: function(base) {
         var deferred = $q.defer();
-        if ($cordovaNetwork.isOnline()) {
-          var targetPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/' + base.title + '.mp3',
-            coverPath = cordova.file.externalRootDirectory + APPDIR + '/bases/' + base.path + '/cover.jpg',
+        if (($cordovaNetwork.isOnline())) {
+          var targetPath = $rootScope.appDir + APPDIR + '/bases/' + base.path + '/' + base.title + '.mp3',
+            coverPath = $rootScope.appDir + APPDIR + '/bases/' + base.path + '/cover.jpg',
             trustHosts = true,
             options = {},
-            baseDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
+            baseDir = $cordovaFile.createDir($rootScope.appDir, APPDIR, false),
             downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
             downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts);
 

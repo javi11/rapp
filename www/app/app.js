@@ -25,15 +25,16 @@ var services = angular.module('rapp.services', []);
 
 app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state) {
   $ionicPlatform.ready(function() {
+  	$rootScope.appDir = cordova.file.externalRootDirectory || cordova.file.dataDirectory;
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       //Create app directory
-      var rootDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR, false),
-        rapDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/rap', false),
-        basesDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/bases', false),
-        tempDir = $cordovaFile.createDir(cordova.file.externalRootDirectory, APPDIR + '/tmp', false);
+      var rootDir = $cordovaFile.createDir($rootScope.appDir, APPDIR, false),
+        rapDir = $cordovaFile.createDir($rootScope.appDir, APPDIR + '/rap', false),
+        basesDir = $cordovaFile.createDir($rootScope.appDir, APPDIR + '/bases', false),
+        tempDir = $cordovaFile.createDir($rootScope.appDir, APPDIR + '/tmp', false);
 
       rootDir
         .then(rapDir)
