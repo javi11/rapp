@@ -1,7 +1,15 @@
-<ion-content class="background login">
+<ion-content class="login background">
   <div class="list list-inset">
+    <div class="item title">
+      <img class="logo" src="img/logo.png" /><span>Inicio de sessión</span>
+    </div>
     <div class="item">
-      <img src="img/logo.png" style="width: 100px;" />
+      <button class="button icon ion-social-facebook button-positive roundButton">
+      </button>
+      <button class="button icon ion-social-twitter button-calm roundButton">
+      </button>
+      <button class="button icon ion-social-googleplus button-assertive roundButton">
+      </button>
     </div>
     <label class="item item-input">
       <i class="icon ion-email placeholder-icon"></i>
@@ -19,19 +27,11 @@
     </div>
   </div>
   <div class="padding">
-    <a ng-href="#/signup" class="button button-stable ion-person-add button-block button-small">
+    <a ng-href="#" ui-sref="signup" class="button button-stable ion-person-add button-block">
       Regístrate
     </a>
-    <div class="error" ng-if="errorMessage" ng-bind="errorMessage">
-    </div>
-    <button class="button ion-social-facebook button-positive button-block">
-      Entra con facebook
-    </button>
-    <button class="button ion-social-twitter button-calm button-block">
-      Entra con twitter
-    </button>
-    <button class="button ion-social-googleplus button-assertive button-block">
-      Entra con google +
-    </button>
+    <a ng-href="#" ui-sref="{{previousState}}" class="button button-dark button-block">
+      Cancelar
+    </a>
   </div>
 </ion-content>

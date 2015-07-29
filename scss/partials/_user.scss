@@ -1,0 +1,26 @@
+.login {
+  background-color: #F6F4EA;
+  .title {
+    line-height: 50px;
+  }
+  .logo {
+    float: left;
+    width: 50px;
+  }
+  .roundButton {
+    border-radius: 50%;
+    border: 3px solid #F6F4EA;
+    overflow: hidden;
+  }
+  p {
+    float: left;
+    color: #353230;
+    a {
+      color: #353230;
+      text-decoration: none;
+    }
+  }
+  .list-inset {
+    text-align: center;
+  }
+}

@@ -1,0 +1,17 @@
+.popup-container .popup {
+  background-color: #7B8F70;
+  background-size: 14px 14px;
+  background-image: -webkit-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: -moz-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: -o-repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 5px);
+  background-image: repeating-linear-gradient(-45deg, rgb(80, 157, 93), black 1px, transparent 1px, transparent 5px);
+  border: 1px solid #151515;
+  color: whitesmoke;
+  h3 {
+    color: whitesmoke;
+  }
+  .button-positive {
+    border-color: #6E7173;
+    background-color: #99B2BE;
+  }
+}

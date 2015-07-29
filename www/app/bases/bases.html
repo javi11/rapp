@@ -3,9 +3,9 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header background">
-    <ion-list class="basesType">
-      <a class="item item-icon-left item-icon-right" ng-repeat="base in bases" ng-click="goToBase(base)">
-        <i class="icon icon-nota"></i> {{base.title}}
+    <ion-list class="bases">
+      <a class="item item-icon-right" ng-repeat="base in bases" ng-click="goToBase(base)">
+        <img ng-show='base.downloaded' local-image="{{APPDIR}}/bases/{{base.path}}/cover.jpg" ng-src=""><img ng-show='!base.downloaded' ng-src="{{base.cover}}"> {{base.title}}
         <i ng-show='!base.downloaded' class="icon icon-caset"></i>
       </a>
     </ion-list>

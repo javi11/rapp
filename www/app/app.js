@@ -25,7 +25,7 @@ var services = angular.module('rapp.services', []);
 
 app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state) {
   $ionicPlatform.ready(function() {
-  	$rootScope.appDir = cordova.file.externalRootDirectory || cordova.file.dataDirectory;
+    $rootScope.appDir = cordova.file.externalRootDirectory || cordova.file.dataDirectory;
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -49,8 +49,9 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
   });
   $rootScope.$on('$stateChangeError', function(event, toState, toParams,
     fromState, fromParams, error) {
-    console.log(error);
-    $state.go(error);
+    $state.go(error, {
+      previousState: $state.current.name
+    });
   });
 })
 
@@ -136,7 +137,10 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
   .state('login', {
     url: '/login',
     templateUrl: 'app/auth/login.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginCtrl',
+    params: {
+      previousState: null,
+    }
   })
 
   .state('reset-password', {

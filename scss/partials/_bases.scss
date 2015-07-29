@@ -1,0 +1,21 @@
+.bases {
+  .list {
+    .item {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-color: #315E00;
+      color: whitesmoke;
+      margin: 10px;
+      line-height: 60px;
+    }
+    .item img {
+      width: 60px;
+      height: 60px;
+      display: block;
+      float: left;
+      margin-right: 10px;
+    }
+    .item.activated {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+}

@@ -9,8 +9,21 @@ services
   .factory('Bases', function(FBURL, $resource, $indexedDB, $cordovaFileTransfer, $cordovaFile, APPDIR, $q, $firebaseArray, $cordovaNetwork, $rootScope) {
 
     var Bases = {
-      downloaded: function(base) {
-        return $cordovaFile.checkFile($rootScope.appDir || +APPDIR + '/bases/' + base.path + '/', base.title + '.mp3');
+      downloaded: function(base, index) {
+        var deferred = $q.defer();
+        $cordovaFile.checkFile($rootScope.appDir + APPDIR + '/bases/' + base.path + '/', base.title + '.mp3')
+          .then(function() {
+            return deferred.resolve({
+              success: true,
+              index: index
+            });
+          }, function() {
+            return deferred.resolve({
+              success: false,
+              index: index
+            });
+          });
+        return deferred.promise;
       },
       getAll: function() {
         var basesRef = new Firebase(FBURL + '/bases');
@@ -27,13 +40,19 @@ services
             coverPath = $rootScope.appDir + APPDIR + '/bases/' + base.path + '/cover.jpg',
             trustHosts = true,
             options = {},
-            baseDir = $cordovaFile.createDir($rootScope.appDir, APPDIR, false),
+            chekBasesDir = $cordovaFile.checkDir($rootScope.appDir, APPDIR + '/bases'),
+            createbasesDir = $cordovaFile.createDir($rootScope.appDir, APPDIR + '/bases', false),
+            chekBaseDir = $cordovaFile.checkDir($rootScope.appDir, APPDIR + '/bases/' + base.path),
+            createbaseDir = $cordovaFile.createDir($rootScope.appDir, APPDIR + '/bases/' + base.path, false),
             downloadBase = $cordovaFileTransfer.download(base.song, targetPath, options, trustHosts),
             downloadCover = $cordovaFileTransfer.download(base.cover, coverPath, options, trustHosts);
 
-          baseDir
-            .then(downloadBase, function(error) {
-              deferred.reject(error);
+          chekBasesDir
+            .then(chekBaseDir, function() {
+              return createbasesDir;
+            })
+            .then(downloadBase, function() {
+              return createbaseDir;
             })
             .then(downloadCover, function(error) {
               deferred.reject(error);

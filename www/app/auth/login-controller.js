@@ -5,6 +5,7 @@
 controllers
   .controller('LoginCtrl',
     function($scope, $state, $ionicLoading, Auth, User, $ionicPopup) {
+      $scope.previousState = $state.params.previousState || 'home';
       $scope.user = {
         email: '',
         password: ''

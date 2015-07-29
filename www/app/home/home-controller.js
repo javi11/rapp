@@ -5,12 +5,12 @@ controllers
   .controller('AppCtrl', function($scope, $ionicModal) {
     $scope.menu = [{
       name: 'Practica Solo',
-      href: '#/app/bases',
+      state: 'app.bases',
       description: 'Entrena antes de la batalla, para ponerte a punto.',
       background: 'alone'
     }, {
       name: 'Batalla',
-      href: '#/',
+      state: 'app',
       description: 'Sube a la tarima y demuestra tus habilidades a todo el mundo.',
       background: 'battle'
     }];

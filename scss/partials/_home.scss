@@ -1,0 +1,41 @@
+.home {
+  div {
+    .box-dark {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    .box {
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      color: #FFF;
+      span {
+        font-family: sans-serif;
+        font-size: 200%;
+        font-style: normal;
+        letter-spacing: 2px;
+      }
+    }
+  }
+  .alone {
+    background: url('../img/alone.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  .battle {
+    background: url('../img/battle.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  .slider-pager .slider-pager-page {
+    color: #FFF;
+  }
+  .feedback {
+    height: 60px;
+    width: 80px;
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    z-index: 999;
+    color: #FFF;
+  }
+}

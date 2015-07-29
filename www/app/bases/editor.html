@@ -9,7 +9,7 @@
         <p>{{base.path || '--'}}</p>
       </div>
       <div class="item item-image">
-        <img local-image="{{APPDIR}}{{base.path}}cover.jpg" ng-src="">
+        <img local-image="{{APPDIR}}/bases/{{base.path}}/cover.jpg" ng-src="">
       </div>
       <div class="item tabs tabs-secondary tabs-icon-left">
         <button class="button button-clear tab-item" ng-class="{'button-positive':playBaseBtn,'button-energized':!playBaseBtn}" ng-click="playBaseBtn ? playBase() : pauseBase()">
