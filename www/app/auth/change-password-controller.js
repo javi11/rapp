@@ -4,7 +4,7 @@
 
 controllers
   .controller('ChangePasswordCtrl',
-    function($scope, $state, $ionicLoading, Auth, User) {
+    function($scope, $state, $ionicLoading, Auth, User, $ionicPopup) {
       var passwordStrengthRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
 
       $scope.user = {
@@ -49,14 +49,22 @@ controllers
       }
 
       function handleError(error) {
+        var errorMessage = null;
         switch (error.code) {
           case 'INVALID_PASSWORD':
-            $scope.errorMessage = 'Contraseña incorrecta';
+            errorMessage = 'Contraseña incorrecta';
             break;
           default:
-            $scope.errorMessage = 'Error: [' + error.code + ']';
+            errorMessage = 'Error: [' + error.code + ']';
         }
 
         $ionicLoading.hide();
+        $ionicLoading.hide();
+        var alertPopup = $ionicPopup.alert({
+          cssClass: 'error',
+          title: 'Error!',
+          template: errorMessage
+        });
+        alertPopup.then(function() {});
       }
     });

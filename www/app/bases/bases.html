@@ -1,11 +1,8 @@
 <ion-view title="Bases">
-  <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-  </ion-nav-buttons>
   <ion-content class="has-header background">
     <ion-list class="bases">
-      <a class="item item-icon-right" ng-repeat="base in bases" ng-click="goToBase(base)">
-        <img ng-show='base.downloaded' local-image="{{APPDIR}}/bases/{{base.path}}/cover.jpg" ng-src=""><img ng-show='!base.downloaded' ng-src="{{base.cover}}"> {{base.title}}
+      <a class="item  item-icon-left item-icon-right" ng-repeat="base in bases" ng-click="showBaseDetails(base)">
+        <i class="icon icon-nota"></i> {{base.title}}
         <i ng-show='!base.downloaded' class="icon icon-caset"></i>
       </a>
     </ion-list>

@@ -1,13 +1,13 @@
 .menu {
-  background-color: #373737;
+  background-color: $menu-background-color;
   .list {
     .item-content {
-      background-color: #373737;
-      border-color: #315E00;
+      background-color: $menu-background-color;
+      border-color: $border-color;
       color: whitesmoke;
     }
     .item {
-      border-color: #3A3A3A;
+      border-color: $border-color;
     }
     .item-content.activated {
       background-color: rgba(0, 0, 0, 0.7);

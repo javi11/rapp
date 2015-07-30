@@ -9,6 +9,7 @@ controllers
     function fail(err) {
       var alertPopup = $ionicPopup.alert({
         title: 'Alerta!',
+        cssClass: 'error',
         template: 'Se produjo un error al intentar realizar esta acción.'
       });
       alertPopup.then(function() {

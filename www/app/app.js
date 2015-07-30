@@ -23,7 +23,7 @@ var controllers = angular.module('rapp.controllers', []);
 
 var services = angular.module('rapp.services', []);
 
-app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state) {
+app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state, $ionicViewSwitcher) {
   $ionicPlatform.ready(function() {
     $rootScope.appDir = cordova.file.externalRootDirectory || cordova.file.dataDirectory;
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -49,8 +49,9 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
   });
   $rootScope.$on('$stateChangeError', function(event, toState, toParams,
     fromState, fromParams, error) {
+    $ionicViewSwitcher.nextDirection('forward');
     $state.go(error, {
-      previousState: $state.current.name
+      previousState: $state.current.name || 'home',
     });
   });
 })
@@ -103,6 +104,16 @@ app.run(function($ionicPlatform, $cordovaFile, APPDIR, Auth, $rootScope, $state)
       'menuContent': {
         templateUrl: 'app/bases/bases.html',
         controller: 'BasesCtrl'
+      }
+    }
+  })
+
+  .state('app.modes', {
+    url: '/modes',
+    views: {
+      'menuContent': {
+        templateUrl: 'app/modes/modes.html',
+        controller: 'ModesCtrl'
       }
     }
   })

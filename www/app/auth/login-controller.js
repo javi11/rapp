@@ -6,6 +6,9 @@ controllers
   .controller('LoginCtrl',
     function($scope, $state, $ionicLoading, Auth, User, $ionicPopup) {
       $scope.previousState = $state.params.previousState || 'home';
+      if ($scope.previousState === 'login') {
+        $scope.previousState = 'home';
+      }
       $scope.user = {
         email: '',
         password: ''
@@ -46,11 +49,10 @@ controllers
         }
         $ionicLoading.hide();
         var alertPopup = $ionicPopup.alert({
+          cssClass: 'error',
           title: 'Error!',
           template: errorMessage
         });
-        alertPopup.then(function() {
-          localStorage.setItem('notFirstTime', true);
-        });
+        alertPopup.then(function() {});
       }
     });

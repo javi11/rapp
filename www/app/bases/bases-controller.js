@@ -2,9 +2,10 @@
 'use strict';
 
 controllers
-  .controller('BasesCtrl', function($ionicPlatform, $scope, $cordovaProgress, $ionicPopup, $rootScope, $record, $state, $ionicLoading, $ionicModal, $stateParams, $q, Bases, APPDIR, AudioSvc) {
+  .controller('BasesCtrl', function($ionicSideMenuDelegate, $ionicPlatform, $scope, $cordovaProgress, $ionicPopup, $rootScope, $record, $state, $ionicLoading, $ionicModal, $stateParams, $q, Bases, APPDIR, AudioSvc) {
     var downloading = false;
 
+    $scope.details = null;
     $scope.recording = false;
     $scope.APPDIR = APPDIR;
     $scope.record = {
@@ -30,9 +31,7 @@ controllers
         title: 'Alerta!',
         template: 'Por favor, conectese a internet para obtener la lista más actualizada de bases o para descargar bases.'
       });
-      alertPopup.then(function() {
-        $state.go('app');
-      });
+      alertPopup.then(function() {});
     }
 
     $rootScope.player = function() {
@@ -129,59 +128,38 @@ controllers
       $record.save($scope.record).then(OnSaved, OnSaved);
     };
 
-    function downloadBase(base) {
-      var confirmPopup = $ionicPopup.confirm({
-        title: base.title,
-        template: 'No tienes esta base descargada, ¿Qiueres descargarla?',
-        buttons: [{
-          text: 'En otro momento',
-          type: 'button-default',
-          onTap: function() {
-            return false;
-          }
-        }, {
-          text: 'Descargar',
-          type: 'button-dark',
-          onTap: function() {
-            return true;
-          }
-        }]
+    $scope.$on('downloadBase', function(event, base) {
+      $ionicLoading.show({
+        template: 'Descargando base.'
       });
-      confirmPopup.then(function(res) {
-        if (res) {
-          $ionicLoading.show({
-            template: 'Descargando base.'
-          });
-          downloading = true;
-          Bases.download(base).then(function(res) {
-            if (!res.status) {
-              noNetwork();
-            } else {
-              var index = $scope.bases.indexOf(base);
-              $scope.bases[index].downloaded = true;
-            }
-            $ionicLoading.hide();
-          }, function(err) {
-            var alertPopup = $ionicPopup.alert({
-              title: 'Alerta!',
-              template: 'Ocurrió un error interno de la aplicación, por favor, elimine todos los datos de la aplicación y reiníciela.'
-            });
-            alertPopup.then(function() {});
-            console.log(JSON.stringify(err));
-            $ionicLoading.hide();
-          });
+      downloading = true;
+      Bases.download(base).then(function(res) {
+        if (!res.status) {
+          noNetwork();
+        } else {
+          var index = $scope.bases.indexOf(base);
+          $scope.bases[index].downloaded = true;
         }
-      });
-    }
-
-    $scope.goToBase = function(base) {
-      if (base.downloaded) {
-        $state.go('app.base', {
-          'id': base.$id
+        $ionicLoading.hide();
+      }, function(err) {
+        var alertPopup = $ionicPopup.alert({
+          cssClass: 'error',
+          title: 'Alerta!',
+          template: 'Ocurrió un error interno de la aplicación, por favor, elimine todos los datos de la aplicación y reiníciela.'
         });
-      } else {
-        downloadBase(base);
-      }
+        alertPopup.then(function() {});
+        console.log(JSON.stringify(err));
+        $ionicLoading.hide();
+      });
+    });
+    $scope.$on('goToBase', function(event, base) {
+      $state.go('app.base', {
+        'id': base.$id
+      });
+    });
+
+    $scope.showBaseDetails = function(base) {
+      $scope.$emit('baseDetails', base);
     };
     $scope.playBase = function() {
       $scope.playBaseBtn = false;

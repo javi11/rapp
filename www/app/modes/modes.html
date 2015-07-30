@@ -1,0 +1,13 @@
+<ion-view title="Modos">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="modes has-header background">
+    <ion-list>
+      <div class="item" ng-repeat="mode in modes" ng-click="goToMode(mode)">
+        {{mode.name}}
+        <div class="item-note">{{mode.description}}</div>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>

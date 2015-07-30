@@ -1,37 +1,39 @@
-<ion-content class="login background">
-  <div class="list list-inset">
-    <div class="item title">
-      <img class="logo" src="img/logo.png" /><span>Inicio de sessión</span>
+<ion-view>
+  <ion-content class="login background">
+    <div class="list list-inset">
+      <div class="item title">
+        <img class="logo" src="img/logo.png" /><span>Inicio de sessión</span>
+      </div>
+      <div class="item">
+        <button class="button icon ion-social-facebook button-positive round-button">
+        </button>
+        <button class="button icon ion-social-twitter button-calm round-button">
+        </button>
+        <button class="button icon ion-social-googleplus button-assertive round-button">
+        </button>
+      </div>
+      <label class="item item-input">
+        <i class="icon ion-email placeholder-icon"></i>
+        <input type="email" placeholder="Email" ng-model="user.email">
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-android-lock placeholder-icon"></i>
+        <input type="password" placeholder="Contraseña" ng-model="user.password">
+      </label>
+      <div class="item">
+        <button class="button button-balanced button-block" ng-click="login()">
+          Entrar
+        </button>
+        <p><a href="#" ui-sref="reset-password">Olvidé mi contraseña</a></p>
+      </div>
     </div>
-    <div class="item">
-      <button class="button icon ion-social-facebook button-positive roundButton">
-      </button>
-      <button class="button icon ion-social-twitter button-calm roundButton">
-      </button>
-      <button class="button icon ion-social-googleplus button-assertive roundButton">
-      </button>
-    </div>
-    <label class="item item-input">
-      <i class="icon ion-email placeholder-icon"></i>
-      <input type="email" placeholder="Email" ng-model="user.email">
-    </label>
-    <label class="item item-input">
-      <i class="icon ion-android-lock placeholder-icon"></i>
-      <input type="password" placeholder="Contraseña" ng-model="user.password">
-    </label>
-    <div class="item">
-      <button class="button button-balanced button-block" ng-click="login()">
-        Entrar
-      </button>
-      <p><a href="#">Olvidé mi contraseña</a></p>
-    </div>
-  </div>
-  <div class="padding">
-    <a ng-href="#" ui-sref="signup" class="button button-stable ion-person-add button-block">
+    <div class="padding">
+      <a ng-href="#" ui-sref="signup" class="button button-stable ion-person-add button-block">
       Regístrate
     </a>
-    <a ng-href="#" ui-sref="{{previousState}}" class="button button-dark button-block">
+      <a ng-href="#" ui-sref="{{previousState}}" nav-direction="back" nav-transition="ios" class="button button-dark button-block">
       Cancelar
     </a>
-  </div>
-</ion-content>
+    </div>
+  </ion-content>
+</ion-view>

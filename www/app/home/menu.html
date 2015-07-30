@@ -16,14 +16,43 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item nav-clear menu-close href="#/app/home">
+        <ion-item nav-clear href="#" menu-close nav-direction="back" nav-transition="ios" ui-sref="home">
           <i class="icon ion-home"></i> Home
         </ion-item>
-        <ion-item menu-close href="#/app/raps">
+        <ion-item menu-close href="#" nav-direction="forward" nav-transition="ios" ui-sref="app.raps">
           <i class="icon icon-nota"></i> Rapp's
         </ion-item>
         <ion-item menu-close href="#" ng-click="openSettings()">
           <i class="icon ion-gear-b"></i> Ajustes
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+  <ion-side-menu side="right" class="base-details" is-enabled="shouldRightSideMenuBeEnabled()">
+    <ion-header-bar class="bar-balanced">
+      <span>Detalles</span>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item>
+        <h4 class="title">{{details.title}}</h4>
+        </ion-item>
+        <ion-item>
+          <img ng-if="details.downloaded" local-image="{{APPDIR}}/bases/{{detail.path}}/cover.jpg" ng-src="" />
+          <img ng-if="!details.downloaded" ng-src="{{details.cover}}" />
+        </ion-item>
+        <ion-item>
+          <a ng-if="details.downloaded" href="#" ng-click="goToBase(details)" class="button button-balanced button-block">
+            Siguiente
+          </a>
+          <a ng-if="!details.downloaded" href="#" ng-click="downloadBase(details)" class="button button-balanced button-block">
+            Descargar base
+          </a>
+        </ion-item>
+        <ion-item>
+          <a menu-close href="#" class="button button-dark button-block">
+            Cerrar
+          </a>
         </ion-item>
       </ion-list>
     </ion-content>

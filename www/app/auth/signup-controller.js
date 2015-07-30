@@ -67,11 +67,10 @@ controllers
 
         $ionicLoading.hide();
         var alertPopup = $ionicPopup.alert({
+          cssClass: 'error',
           title: 'Error!',
           template: errorMessage
         });
-        alertPopup.then(function() {
-          localStorage.setItem('notFirstTime', true);
-        });
+        alertPopup.then(function() {});
       }
     });

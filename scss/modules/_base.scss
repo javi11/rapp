@@ -14,12 +14,18 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-
-$balanced: #3F4E51 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
-// Include all of Ionic
-$base-background-color: #F6F4EA !default;
+//colors 
+$error_header: #792D2D !default;
+$base-background-color: #99B2BE !default;
+$menu-background-color: #353230 !default;
+$border-color: #63605E !default;
+$balanced: #3F4E51 !default;
+$popup-background-color: #7B8F70;
+$popup-button-color: #99B2BE;
+$popup-button-border-color: #6E7173;
+
 @import "www/lib/ionic/scss/ionic";
 .background {
   background: url('../img/background.png') repeat;

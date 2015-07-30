@@ -2,10 +2,11 @@
 'use strict';
 
 controllers
-  .controller('AppCtrl', function($scope, $ionicModal) {
+  .controller('AppCtrl', function($scope, $ionicModal, $ionicSideMenuDelegate, APPDIR, $state) {
+    $scope.APPDIR = APPDIR;
     $scope.menu = [{
       name: 'Practica Solo',
-      state: 'app.bases',
+      state: 'app.modes',
       description: 'Entrena antes de la batalla, para ponerte a punto.',
       background: 'alone'
     }, {
@@ -27,5 +28,28 @@ controllers
     $scope.$on('$destroy', function() {
       $scope.settings.remove();
     });
+    $scope.details = null;
 
+    $scope.$on('baseDetails', function(event, base) {
+      $ionicSideMenuDelegate.toggleRight();
+      $scope.details = base;
+    });
+
+    $scope.downloadBase = function(base) {
+      $ionicSideMenuDelegate.toggleRight();
+      $scope.$broadcast('downloadBase', base);
+    };
+
+    $scope.goToBase = function(base) {
+      $ionicSideMenuDelegate.toggleRight();
+      $scope.$broadcast('goToBase', base);
+    };
+
+    $scope.shouldRightSideMenuBeEnabled = function() {
+      if ($state.current.name === 'app.bases') {
+        return true;
+      } else {
+        return false;
+      }
+    };
   });
